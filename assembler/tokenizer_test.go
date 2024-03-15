@@ -28,9 +28,9 @@ func TestSingleChar(t *testing.T) {
 func TestIdent(t *testing.T) {
 	testString := "(hello)"
 	expected := []Token{
-		Token{ID: TOK_LPAREN, Contents: "("},
-		Token{ID: TOK_IDENT, Contents: "hello"},
-		Token{ID: TOK_RPAREN, Contents: ")"},
+		{ID: TOK_LPAREN, Contents: "("},
+		{ID: TOK_IDENT, Contents: "hello"},
+		{ID: TOK_RPAREN, Contents: ")"},
 	}
 
 	results := Tokenize(testString)
@@ -45,10 +45,10 @@ func TestIdent(t *testing.T) {
 func TestKeyword(t *testing.T) {
 	testString := "(set lda)"
 	expected := []Token{
-		Token{ID: TOK_LPAREN, Contents: "("},
-		Token{ID: TOK_DIR, Contents: "set"},
-		Token{ID: TOK_INS, Contents: "lda"},
-		Token{ID: TOK_RPAREN, Contents: ")"},
+		{ID: TOK_LPAREN, Contents: "("},
+		{ID: TOK_DIR, Contents: "set"},
+		{ID: TOK_INS, Contents: "lda"},
+		{ID: TOK_RPAREN, Contents: ")"},
 	}
 
 	results := Tokenize(testString)
