@@ -1,0 +1,14 @@
+    org(0x0000)
+def main:
+    lda     11
+    sub     %constants.my_number    ;;A comparison test
+    jnz     main.not_equal
+    lda     1
+    halt
+
+subdef not_equal:
+    lda     0
+    halt
+
+def constants:
+   subdef my_number: dw(11)
