@@ -1,4 +1,4 @@
-package assembler
+package tokenizer
 
 type TokenID byte
 type Token struct {
@@ -23,11 +23,8 @@ const (
 	TOK_HEX_INT                // -11, 23, 44, etc
 	TOK_BIN_INT                //0b<num>
 	TOK_STR                    // '<stuff>'
-	TOK_LBRACK                 // '['
-	TOK_RBRACK                 // ']'
-	TOK_PERCENT                // '%'
-	TOK_MINUS                  //'-'
 	TOK_DIR                    // set, pad, fill, etc
 	TOK_DEF
 	TOK_SUBDEF
+	TOK_ADDR_MODE
 )

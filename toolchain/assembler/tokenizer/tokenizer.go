@@ -1,4 +1,4 @@
-package assembler
+package tokenizer
 
 func Tokenize(s string) []Token {
 
@@ -60,14 +60,14 @@ func tokenizeIdent(curPos *int, s string, curTokens *[]Token) {
 	curChar := s[*(curPos)]
 
 	identString := string(curChar)
-	for *(curPos) < len(s)-1 && (isAlpha(curChar) || isNum(curChar)) {
+	for *(curPos) < len(s)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
 		*(curPos) += 1
 		curChar = s[*(curPos)]
 		identString += string(curChar)
 	}
 
 	var tok Token //Handle some weird off-by-one errors
-	if *(curPos) == len(s)-1 && (isAlpha(curChar) || isNum(curChar)) {
+	if *(curPos) == len(s)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
 		tok = Token{ID: TOK_IDENT, Contents: identString}
 		*(curPos)++
 	} else {
@@ -97,20 +97,20 @@ func tokenizeString(curPos *int, s string, curTokens *[]Token) {
 }
 
 func tokenizeNumber(curPos *int, s string, curTokens *[]Token) {
-	acceptable_chars := []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+	acceptableChars := []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 	id := TOK_DEC_INT
 	if *(curPos) != len(s)-1 && s[*(curPos)+1] == 'x' {
-		acceptable_chars = append(acceptable_chars, []byte{'a', 'b', 'c', 'd', 'e', 'f'}...)
+		acceptableChars = append(acceptableChars, []byte{'a', 'b', 'c', 'd', 'e', 'f'}...)
 		id = TOK_HEX_INT
 		*(curPos) += 2
 	} else if *(curPos) != len(s)-1 && s[*(curPos)+1] == 'b' {
-		acceptable_chars = []byte{'0', '1'}
+		acceptableChars = []byte{'0', '1'}
 		id = TOK_BIN_INT
 		*(curPos) += 2
 	}
 
 	out := ""
-	for *(curPos) != len(s) && isIn(s[*(curPos)], acceptable_chars) {
+	for *(curPos) != len(s) && isIn(s[*(curPos)], acceptableChars) {
 		out += string(s[*(curPos)])
 		*(curPos)++
 	}
@@ -119,38 +119,35 @@ func tokenizeNumber(curPos *int, s string, curTokens *[]Token) {
 	*(curTokens) = append(*(curTokens), tok)
 }
 
-var singleCharMap map[byte]TokenID = map[byte]TokenID{
+var singleCharMap = map[byte]TokenID{
 	'.':  TOK_DOT,
 	'\n': TOK_NEWLINE,
 	'(':  TOK_LPAREN,
 	')':  TOK_RPAREN,
 	':':  TOK_COLON,
 	',':  TOK_COMMA,
-	'[':  TOK_LBRACK,
-	']':  TOK_RBRACK,
-	'%':  TOK_PERCENT,
-	'-':  TOK_MINUS,
 }
 
 var keywordMap = map[string]TokenID{
 	"org":    TOK_DIR,
 	"equ":    TOK_DIR,
-	"fill":   TOK_DIR,
-	"pad":    TOK_DIR,
-	"set":    TOK_DIR,
 	"dw":     TOK_DIR,
 	"lda":    TOK_INS,
 	"sta":    TOK_INS,
 	"add":    TOK_INS,
-	"nand":   TOK_INS,
+	"nnd":    TOK_INS,
 	"xor":    TOK_INS,
 	"sub":    TOK_INS,
 	"jsr":    TOK_INS,
 	"jmp":    TOK_INS,
 	"jnz":    TOK_INS,
 	"jns":    TOK_INS,
-	"halt":   TOK_INS,
+	"hlt":    TOK_INS,
 	"nop":    TOK_INS,
 	"def":    TOK_DEF,
 	"subdef": TOK_SUBDEF,
+	"imm":    TOK_ADDR_MODE,
+	"ind":    TOK_ADDR_MODE,
+	"dir":    TOK_ADDR_MODE,
+	"inc":    TOK_ADDR_MODE,
 }

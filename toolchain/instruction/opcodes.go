@@ -1,7 +1,8 @@
 package instruction
 
 const (
-	NOP uint8 = iota
+	JMP uint8 = iota
+	NOP
 	LD
 	STORE
 	ADD
@@ -9,14 +10,13 @@ const (
 	XOR
 	SUB
 	JSR
-	JMP
 	JNZ
 	JNS
 	HALT
 )
 
 var OpcodeStringMap = map[uint8]string{
-	HALT:  "halt",
+	HALT:  "hlt",
 	NOP:   "nop",
 	LD:    "lda",
 	STORE: "sta",
@@ -31,7 +31,7 @@ var OpcodeStringMap = map[uint8]string{
 }
 
 var StringOpcodeMap = map[string]uint8{
-	"halt": HALT,
+	"hlt":  HALT,
 	"nop":  NOP,
 	"lda":  LD,
 	"sta":  STORE,
