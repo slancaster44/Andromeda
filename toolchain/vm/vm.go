@@ -67,11 +67,11 @@ func (v *VM) JSR(i int16) {
 }
 
 func (v *VM) JMP(i int16) {
-	ins := instruction.Instruction(v.Memory[v.PC-1])
+	ins := instruction.Instruction(v.Memory[v.PC])
 	if ins.AddressingMode() == instruction.AM_IMM {
 		v.PC += uint16(i - 1)
 	} else {
-		v.PC = uint16(i - 1)
+		v.PC = uint16(i)
 	}
 }
 
@@ -100,9 +100,12 @@ func (v *VM) Store() {
 		v.Memory[i.Address()] = v.Accumulator
 	} else if i.AddressingMode() == instruction.AM_IND {
 		v.Memory[uint16(v.Memory[i.Address()])] = v.Accumulator
-	} else {
+	} else if i.AddressingMode() == instruction.AM_INC {
 		v.Memory[uint16(v.Memory[i.Address()])] = v.Accumulator
 		v.Memory[i.Address()]++
+	} else {
+		v.Memory[i.Address()]--
+		v.Memory[uint16(v.Memory[i.Address()])] = v.Accumulator
 	}
 }
 
@@ -115,7 +118,9 @@ func (v *VM) InvalidInstructionTrap() {
 func (v *VM) SingleStep() {
 	i := instruction.Instruction(v.Memory[v.PC])
 
-	if !i.IsValid() {
+	if v.HFF {
+		return
+	} else if !i.IsValid() {
 		v.InvalidInstructionTrap()
 	} else if i.Opcode() == instruction.STORE {
 		v.Store()
@@ -132,6 +137,9 @@ func (v *VM) SingleStep() {
 		} else if i.AddressingMode() == instruction.AM_INC {
 			val = v.Memory[uint16(v.Memory[i.Address()])]
 			v.Memory[i.Address()]++
+		} else if i.AddressingMode() == instruction.AM_DEC {
+			v.Memory[i.Address()]--
+			val = v.Memory[uint16(v.Memory[i.Address()])]
 		} else {
 			v.InvalidInstructionTrap()
 		}

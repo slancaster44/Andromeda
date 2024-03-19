@@ -31,16 +31,16 @@ var OpcodeStringMap = map[uint8]string{
 }
 
 var StringOpcodeMap = map[string]uint8{
-	"hlt":  HALT,
-	"nop":  NOP,
-	"lda":  LD,
-	"sta":  STORE,
-	"add":  ADD,
-	"nand": NAND,
-	"xor":  XOR,
-	"sub":  SUB,
-	"jsr":  JSR,
-	"jmp":  JMP,
-	"jnz":  JNZ,
-	"jns":  JNS,
+	"hlt": HALT,
+	"nop": NOP,
+	"lda": LD,
+	"sta": STORE,
+	"add": ADD,
+	"nnd": NAND,
+	"xor": XOR,
+	"sub": SUB,
+	"jsr": JSR,
+	"jmp": JMP,
+	"jnz": JNZ,
+	"jns": JNS,
 }

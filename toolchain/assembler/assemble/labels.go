@@ -6,27 +6,42 @@ import (
 	"fmt"
 )
 
-func (a *AssemblyContext) getLabel(shouldBackpatch bool) (uint64, error) {
+func (a *AssemblyContext) getLabel(shouldBackpatch bool) uint64 {
 	a.checkAndConsumeByID(tokenizer.TOK_IDENT)
 	identTok, err := a.curToken()
 	a.insertError(err)
 
 	ident := identTok.Contents
+
+	maybeDot, err := a.nextToken()
+	if maybeDot.ID == tokenizer.TOK_DOT {
+		a.checkAndConsumeByID(tokenizer.TOK_IDENT)
+		second, err := a.curToken()
+		a.insertError(err)
+		ident += "." + second.Contents
+	} else {
+		_, err := a.lastToken()
+		if err != nil {
+			a.insertError(err)
+		}
+	}
+
 	addr, ok := a.getCurrentObject().Labels[ident]
 	if !ok && shouldBackpatch {
 		lst, lstOk := a.backpatches[ident]
 		if lstOk {
 			a.backpatches[ident] = append(lst, a.curAddress())
-			return 1, nil
+			return 0
 		} else {
 			a.backpatches[ident] = []uint16{a.curAddress()}
-			return uint64(addr), nil
+			return uint64(addr)
 		}
 	} else if !shouldBackpatch && !ok {
-		return 0, errors.New("label not yet defined")
+		a.insertError(errors.New("label not yet defined"))
+		return 0
 	}
 
-	return uint64(addr), nil
+	return uint64(addr)
 }
 
 func (a *AssemblyContext) handleSubdefines() {
@@ -42,7 +57,6 @@ func (a *AssemblyContext) handleSubdefines() {
 	}
 
 	obj.Labels[ident] = a.curAddress()
-	a.curOuterLabel = tokIdent.Contents
 	a.updatePatches(ident)
 
 	a.checkAndConsume(tokenizer.TOK_COLON, ":")

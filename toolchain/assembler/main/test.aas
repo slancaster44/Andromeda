@@ -1,14 +1,14 @@
     org(0x0000)
 def main:
-    lda.imm    11
-    sub.dir    constants.my_number    ;;A comparison test
-    jnz.imm    main.not_equal
     lda.imm    1
+    sta.inc    constants.out
+    jmp.imm    main
     hlt
 
 subdef not_equal:
     lda.imm    0
     hlt
 
+    org(0xFF00)
 def constants:
-   subdef my_number: dw(11)
+subdef out: dw(0x0010)

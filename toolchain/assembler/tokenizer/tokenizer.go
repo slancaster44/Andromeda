@@ -150,4 +150,5 @@ var keywordMap = map[string]TokenID{
 	"ind":    TOK_ADDR_MODE,
 	"dir":    TOK_ADDR_MODE,
 	"inc":    TOK_ADDR_MODE,
+	"dec":    TOK_ADDR_MODE,
 }

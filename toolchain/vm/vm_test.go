@@ -8,14 +8,13 @@ import (
 )
 
 func TestLD(t *testing.T) {
-	mem := []int16{ /*TODO: Autoincrement */
-		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 2).ToInt16(),
-		instruction.NewInstruction(instruction.LD, instruction.AM_DIR, 3).ToInt16(),
-		instruction.NewInstruction(instruction.LD, instruction.AM_IND, 4).ToInt16(),
-		32,  //3
-		5,   //4
-		-11, //5
-	}
+	mem := make([]int16, 64*1024) /* TODO: Auto increment & decrement */
+	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 2).ToInt16()
+	mem[1] = instruction.NewInstruction(instruction.LD, instruction.AM_DIR, 3).ToInt16()
+	mem[2] = instruction.NewInstruction(instruction.LD, instruction.AM_IND, 4).ToInt16()
+	mem[5] = -11
+	mem[0xFF03] = 32
+	mem[0xFF04] = 5
 
 	v := vm.NewVM(mem)
 
@@ -39,11 +38,10 @@ func TestStore(t *testing.T) {
 	location := uint16(0xFFEE)
 	constant := -2
 
-	mem := []int16{
-		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, constant).ToInt16(),
-		instruction.NewInstruction(instruction.STORE, instruction.AM_IND, 2).ToInt16(),
-		int16(location),
-	}
+	mem := make([]int16, 64*1024)
+	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, constant).ToInt16()
+	mem[1] = instruction.NewInstruction(instruction.STORE, instruction.AM_IND, 2).ToInt16()
+	mem[0xFF02] = int16(location)
 
 	v := vm.NewVM(mem)
 	v.SingleStep()
@@ -79,7 +77,7 @@ func TestJSR(t *testing.T) {
 func TestJMP(t *testing.T) {
 	mem := make([]int16, 1024*64)
 	mem[0x0000] = instruction.NewInstruction(instruction.JMP, instruction.AM_DIR, 1).ToInt16()
-	mem[0x0001] = 0x0FEC
+	mem[0xFF01] = 0x0FEC
 	mem[0x0FEC] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, -3).ToInt16()
 	mem[0x0FED] = instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16()
 
@@ -100,16 +98,13 @@ func TestArithmetic(t *testing.T) {
 	//Test Series: 4 + -2 NAND 110 XOR 0xFFEE - 11
 	//Result should be 8
 
-	xor_const := uint16(0xFFEE)
-
 	mem := []int16{
 		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 4).ToInt16(),
 		instruction.NewInstruction(instruction.ADD, instruction.AM_IMM, -2).ToInt16(),
 		instruction.NewInstruction(instruction.NAND, instruction.AM_IMM, 110).ToInt16(),
-		instruction.NewInstruction(instruction.XOR, instruction.AM_DIR, 6).ToInt16(),
+		instruction.NewInstruction(instruction.XOR, instruction.AM_IMM, 0xFFEE).ToInt16(),
 		instruction.NewInstruction(instruction.SUB, instruction.AM_IMM, 11).ToInt16(),
 		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
-		int16(xor_const),
 	}
 
 	v := vm.NewVM(mem)

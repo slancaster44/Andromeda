@@ -28,8 +28,7 @@ func (a *AssemblyContext) handleInstruction() {
 			a.insertError(fmt.Errorf("Unexpected addressing mode '%s'\n", amTok.Contents))
 		}
 
-		number, err := a.getNumber(true)
-		a.insertError(err)
+		number := a.getNumber(true)
 
 		ins = instruction.NewInstruction(opcode, addrMode, int(number))
 

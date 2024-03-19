@@ -24,8 +24,7 @@ func (a *AssemblyContext) handleDirective() {
 func (a *AssemblyContext) handleOrigin() {
 	a.checkAndConsume(tokenizer.TOK_LPAREN, "(")
 
-	number, err := a.getNumber(false)
-	a.insertError(err)
+	number := a.getNumber(false)
 
 	a.checkAndConsume(tokenizer.TOK_RPAREN, ")")
 
@@ -35,8 +34,7 @@ func (a *AssemblyContext) handleOrigin() {
 func (a *AssemblyContext) handleDataword() {
 	a.checkAndConsume(tokenizer.TOK_LPAREN, "(")
 
-	number, err := a.getNumber(false)
-	a.insertError(err)
+	number := a.getNumber(false)
 
 	a.checkAndConsume(tokenizer.TOK_RPAREN, ")")
 
@@ -53,8 +51,7 @@ func (a *AssemblyContext) handleEqu() {
 
 	a.checkAndConsume(tokenizer.TOK_COMMA, ",")
 
-	number, err := a.getNumber(false)
-	a.insertError(err)
+	number := a.getNumber(false)
 
 	a.checkAndConsume(tokenizer.TOK_RPAREN, ")")
 

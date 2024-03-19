@@ -6,12 +6,13 @@ import (
 	"strconv"
 )
 
-func (a *AssemblyContext) getNumber(shouldBackpatch bool) (uint64, error) {
+func (a *AssemblyContext) getNumber(shouldBackpatch bool) uint64 {
 
 	tok, err := a.nextToken()
 	var number uint64
 	if err != nil {
-		return 0, fmt.Errorf("Expected number, got eof\n")
+		a.insertError(fmt.Errorf("Expected number, got eof\n"))
+		return 0
 	} else if tok.ID == tokenizer.TOK_HEX_INT {
 		number, err = strconv.ParseUint(tok.Contents, 16, 16)
 	} else if tok.ID == tokenizer.TOK_DEC_INT {
@@ -21,13 +22,15 @@ func (a *AssemblyContext) getNumber(shouldBackpatch bool) (uint64, error) {
 	} else if tok.ID == tokenizer.TOK_IDENT {
 		_, err := a.lastToken()
 		if err != nil {
-			return 2, err
+			a.insertError(err)
+			return 2
 		}
 
 		return a.getLabel(shouldBackpatch)
 	} else {
-		return 1, fmt.Errorf("Expected number got '%s'\n", tok.Contents)
+		a.insertError(fmt.Errorf("Expected number got '%s'\n", tok.Contents))
+		return 1
 	}
 
-	return number, nil
+	return number
 }

@@ -12,7 +12,7 @@ import "fmt"
 type Instruction uint16
 
 func NewInstruction(opcode uint8, addressing_mode byte, immediate int) Instruction {
-	return (Instruction((opcode<<2)|addressing_mode) << 8) | Instruction(uint8(immediate))
+	return (Instruction((opcode<<3)|addressing_mode) << 8) | Instruction(uint8(immediate))
 }
 
 func NewHalt() Instruction {
@@ -24,7 +24,7 @@ func NewNop() Instruction {
 }
 
 func (i Instruction) Opcode() uint8 {
-	return uint8(i >> 10)
+	return uint8(i >> 11)
 }
 
 func (i Instruction) Immediate() int16 {
@@ -33,7 +33,7 @@ func (i Instruction) Immediate() int16 {
 }
 
 func (i Instruction) Address() uint16 {
-	return uint16(i.RightByte())
+	return 0xFF00 + uint16(i.RightByte())
 }
 
 func (i Instruction) IsJmp() bool {
@@ -41,7 +41,7 @@ func (i Instruction) IsJmp() bool {
 }
 
 func (i Instruction) AddressingMode() byte {
-	return i.LeftByte() & 0b11
+	return i.LeftByte() & 0b111
 }
 
 func (i Instruction) LeftByte() uint8 {
@@ -88,8 +88,8 @@ func (i Instruction) String() string {
 	} else if i.Opcode() == NOP {
 		return "nop"
 	} else if i.AddressingMode() == AM_IMM {
-		return fmt.Sprintf("%s.%s\t\t%d", OpcodeStringMap[i.Opcode()], AddressingStringMap[i.AddressingMode()], i.Immediate())
+		return fmt.Sprintf("%s.%s %d", OpcodeStringMap[i.Opcode()], AddressingStringMap[i.AddressingMode()], i.Immediate())
 	}
 
-	return fmt.Sprintf("%s.%s\t\t0x%02X", OpcodeStringMap[i.Opcode()], AddressingStringMap[i.AddressingMode()], i.Immediate())
+	return fmt.Sprintf("%s.%s 0x%02X", OpcodeStringMap[i.Opcode()], AddressingStringMap[i.AddressingMode()], i.Immediate())
 }

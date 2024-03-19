@@ -32,7 +32,7 @@ func (c *CodeObject) String() string {
 
 		for k, v := range c.Labels {
 			if v == curLocation {
-				out += fmt.Sprintf("\n; Defined as 0x%04X\n%s:\n", v, k)
+				out += fmt.Sprintf("\n%s: ; Defined as 0x%04X\n", k, v)
 			}
 		}
 
@@ -44,14 +44,14 @@ func (c *CodeObject) String() string {
 }
 
 func (c *CodeObject) InsertPatch(location uint16, program_counter uint16) {
-	offset := int(location) - int(c.Origin)
+	offset := int(location - c.Origin)
 	if offset < len(c.Code)-1 && offset >= 0 {
 		i := c.Code[offset]
 		if i.AddressingMode() == instruction.AM_IMM && i.IsJmp() {
 			v := uint16(int(program_counter) - int(location))
 			c.Code[offset] = instruction.Instruction((uint16(i) & 0xFF00) + v)
 		} else {
-			c.Code[offset] = instruction.Instruction((uint16(i) & 0xFF00) + program_counter)
+			c.Code[offset] = instruction.Instruction(i + instruction.Instruction(0x00FF&program_counter))
 		}
 	}
 }
