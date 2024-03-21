@@ -1,36 +1,103 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\numberline {1}Architectural Overview}{3}{}\protected@file@percent }
-\newlabel{subsec:archetctural-overview}{{1}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Design Goals \& Inspiration}{3}{}\protected@file@percent }
-\newlabel{subsec:design-goals-&-inspiration}{{1.1}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Accumulator}{3}{}\protected@file@percent }
-\newlabel{subsec:accumulator}{{1.2}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Memory}{3}{}\protected@file@percent }
-\newlabel{subsec:memory}{{1.3}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Instruction Format}{3}{}\protected@file@percent }
-\newlabel{subsec:instruction-format}{{1.4}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Representing Numbers}{4}{}\protected@file@percent }
-\newlabel{subsec:representing-numbers}{{1.5}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Addressing Modes}{4}{}\protected@file@percent }
-\newlabel{subsec:addressing-modes}{{1.6}{4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.1}Immediate (IMM)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.2}Memory Direct (DIR)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.3}Memory Indirect (IND)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.4}Memory Indirect \& Auto Increment (INC)}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.5}Memory Indirect \& Auto Decrement (DEC)}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}Block Diagram}{6}{}\protected@file@percent }
-\newlabel{subsec:block-diagram}{{1.7}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Instruction Set}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}LDA}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}STA}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}ADD}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}SUB}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}XOR}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}NAND}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}JMP}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}JSR}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}JNS}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}JNZ}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}HALT}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.12}NOP}{7}{}\protected@file@percent }
-\gdef \@abspage@last{7}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Architectural Overview}{4}{}\protected@file@percent }
+\newlabel{subsec:archetctural-overview}{{1}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Design Goals \& Inspiration}{4}{}\protected@file@percent }
+\newlabel{subsec:design-goals-&-inspiration}{{1.1}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Accumulator}{4}{}\protected@file@percent }
+\newlabel{subsec:accumulator}{{1.2}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Memory}{4}{}\protected@file@percent }
+\newlabel{subsec:memory}{{1.3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Instruction Format}{4}{}\protected@file@percent }
+\newlabel{subsec:instruction-format}{{1.4}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Representing Numbers}{5}{}\protected@file@percent }
+\newlabel{subsec:representing-numbers}{{1.5}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Addressing Modes}{5}{}\protected@file@percent }
+\newlabel{subsec:addressing-modes}{{1.6}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.1}Immediate (IMM)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.2}Memory Direct (DIR)}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.3}Relative Direct (REL)}{5}{}\protected@file@percent }
+\newlabel{subsec:relative-direct-(rel)}{{1.6.3}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.4}Memory Indirect (IND)}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.5}Memory Indirect \& Auto Increment (INC)}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.6.6}Auto Decrement \& Memory Indirect (DEC)}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}Block Diagram}{8}{}\protected@file@percent }
+\newlabel{subsec:block-diagram}{{1.7}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.8}Reset Sequence}{8}{}\protected@file@percent }
+\newlabel{subsec:reset-sequence}{{1.8}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.9}Invalid Instruction Trap}{8}{}\protected@file@percent }
+\newlabel{subsec:invalid-instruction-trap}{{1.9}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Instruction Set}{9}{}\protected@file@percent }
+\newlabel{sec:instruction-set}{{2}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}LDA}{9}{}\protected@file@percent }
+\newlabel{subsec:lda}{{2.1}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Description}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.2}Encoding}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.3}Process}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.4}Example}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}STA}{9}{}\protected@file@percent }
+\newlabel{subsec:sta}{{2.2}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Description}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Encoding}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Process}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}Example}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}ADD}{10}{}\protected@file@percent }
+\newlabel{subsec:add}{{2.3}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Description}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Encoding}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}Process}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.4}Example}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}SUB}{10}{}\protected@file@percent }
+\newlabel{subsec:sub}{{2.4}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Description}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Encoding}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Process}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.4}Example}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}XOR}{11}{}\protected@file@percent }
+\newlabel{subsec:xor}{{2.5}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}Description}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.2}Encoding}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.3}Process}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.4}Example}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}NND}{11}{}\protected@file@percent }
+\newlabel{subsec:nand}{{2.6}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.1}Description}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.2}Encoding}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.3}Process}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.4}Example}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}JMP}{11}{}\protected@file@percent }
+\newlabel{subsec:jmp}{{2.7}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.1}Description}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.2}Encoding}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.3}Process}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.7.4}Example}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}JSR}{12}{}\protected@file@percent }
+\newlabel{subsec:jsr}{{2.8}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.1}Description}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.2}Encoding}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.3}Process}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.8.4}Example}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}JNS}{12}{}\protected@file@percent }
+\newlabel{subsec:jns}{{2.9}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.1}Description}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.2}Encoding}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.3}Process}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.9.4}Example}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}JNZ}{13}{}\protected@file@percent }
+\newlabel{subsec:jnz}{{2.10}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.10.1}Description}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.10.2}Encoding}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.10.3}Process}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.10.4}Example}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}HALT}{13}{}\protected@file@percent }
+\newlabel{subsec:halt}{{2.11}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.11.1}Description}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.11.2}Encoding}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.11.3}Process}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.11.4}Example}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.12}NOP}{13}{}\protected@file@percent }
+\newlabel{subsec:nop}{{2.12}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.12.1}Description}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.12.2}Encoding}{14}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.12.3}Process}{14}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.12.4}Example}{14}{}\protected@file@percent }
+\gdef \@abspage@last{14}

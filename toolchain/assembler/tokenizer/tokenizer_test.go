@@ -38,7 +38,7 @@ func TestIdent(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Logf("%v", v)
+			t.Fatalf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize identifiers")
 	}
@@ -56,7 +56,7 @@ func TestKeyword(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Logf("%v", v)
+			t.Fatalf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize identifiers")
 	}
@@ -74,17 +74,19 @@ func TestString(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Logf("%v", v)
+			t.Fatalf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize strings")
 	}
 }
 
 func TestInt(t *testing.T) {
-	testString := "32 0x55f 0b10114"
+	testString := "32 (0xf55) 0b10114"
 	expected := []Token{
 		{TOK_DEC_INT, "32"},
-		{TOK_HEX_INT, "55f"},
+		{TOK_LPAREN, "("},
+		{TOK_HEX_INT, "f55"},
+		{TOK_RPAREN, ")"},
 		{TOK_BIN_INT, "1011"},
 		{TOK_DEC_INT, "4"},
 	}
@@ -92,10 +94,12 @@ func TestInt(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Logf("%v", v)
+			t.Fatalf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize strings")
 	}
+
+	t.Log(results)
 }
 
 func TestComment(t *testing.T) {
@@ -107,7 +111,7 @@ func TestComment(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Logf("%v", v)
+			t.Fatalf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize strings")
 	}

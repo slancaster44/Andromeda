@@ -32,7 +32,7 @@ func (a *AssemblyContext) handleInstruction() {
 
 		ins = instruction.NewInstruction(opcode, addrMode, int(number))
 
-		if ins.IsJmp() && addrMode == instruction.AM_IMM {
+		if addrMode == instruction.AM_REL {
 			number = number - uint64(a.curAddress())
 			ins = instruction.NewInstruction(opcode, addrMode, int(number))
 		}

@@ -109,14 +109,14 @@ func TestDefines(t *testing.T) {
 
 	for i, v := range expectedInstruction {
 		if objects[0].Code[i] != v {
-			t.Logf("Did not generate expected instructions\n")
+			t.Fatalf("Did not generate expected instructions\n")
 		}
 	}
 
 	for i, v := range expectedLabel {
 		t.Logf("%s - 0x%X", i, v)
 		if objects[0].Labels[i] != v {
-			t.Logf("Did not generate expected labels got '0x%X'\n", objects[0].Labels[i])
+			t.Fatalf("Did not generate expected labels got '0x%X'\n", objects[0].Labels[i])
 		}
 	}
 
@@ -128,15 +128,15 @@ func TestLabels(t *testing.T) {
 		`org (0x0000)
 	def loop_back:
 		lda.dir constant
-		jmp.imm loop_back
-		jmp.imm forward
+		jmp.rel loop_back
+		jmp.rel forward
 	def constant: dw(11)
 	def forward: hlt`
 
 	expectedInstruction := []instruction.Instruction{
 		instruction.NewInstruction(instruction.LD, instruction.AM_DIR, 3),
-		instruction.NewInstruction(instruction.JMP, instruction.AM_IMM, -1),
-		instruction.NewInstruction(instruction.JMP, instruction.AM_IMM, 2),
+		instruction.NewInstruction(instruction.JMP, instruction.AM_REL, -1),
+		instruction.NewInstruction(instruction.JMP, instruction.AM_REL, 2),
 		instruction.Instruction(11),
 		instruction.NewHalt(),
 	}
@@ -212,16 +212,16 @@ func TestMultipleObjects(t *testing.T) {
 	objects := NewAssemblyContext().Assemble(tokens)
 
 	if len(objects) != 2 {
-		t.Logf("Expected 2 objects, got '%d'\n", len(objects))
+		t.Fatalf("Expected 2 objects, got '%d'\n", len(objects))
 	}
 
 	if !reflect.DeepEqual(expected1, objects[0]) {
-		t.Logf("Expected does not match first object")
-		t.Logf("%v\n%v", expected1, objects[0])
+		t.Log("Expected does not match first object")
+		t.Fatalf("%v\n%v", expected1, objects[0])
 	}
 
 	if !reflect.DeepEqual(expected2, objects[1]) {
-		t.Logf("Expected does not match first object")
-		t.Logf("%v\n%v", expected2, objects[1])
+		t.Log("Expected does not match first object")
+		t.Fatalf("%v\n%v", expected2, objects[1])
 	}
 }

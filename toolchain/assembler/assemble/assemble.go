@@ -65,7 +65,14 @@ func (a *AssemblyContext) insertError(e error) {
 }
 
 func (a *AssemblyContext) Assemble(toks []tokenizer.Token) []*object.CodeObject {
-	a.tokens = append(a.tokens, toks...)
+	if len(a.tokens) == 0 {
+		a.tokens = toks
+	} else {
+		a.curLocation++
+		front := a.tokens[:a.curLocation]
+		back := a.tokens[a.curLocation:]
+		a.tokens = append(append(front, toks...), back...)
+	}
 
 	tok, err := a.curToken()
 	for err == nil {

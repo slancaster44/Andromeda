@@ -36,10 +36,6 @@ func (i Instruction) Address() uint16 {
 	return 0xFF00 + uint16(i.RightByte())
 }
 
-func (i Instruction) IsJmp() bool {
-	return i.Opcode() == JNS || i.Opcode() == JNZ || i.Opcode() == JMP || i.Opcode() == JSR
-}
-
 func (i Instruction) AddressingMode() byte {
 	return i.LeftByte() & 0b111
 }
@@ -87,7 +83,7 @@ func (i Instruction) String() string {
 		return "hlt"
 	} else if i.Opcode() == NOP {
 		return "nop"
-	} else if i.AddressingMode() == AM_IMM {
+	} else if i.AddressingMode() == AM_IMM || i.AddressingMode() == AM_REL {
 		return fmt.Sprintf("%s.%s %d", OpcodeStringMap[i.Opcode()], AddressingStringMap[i.AddressingMode()], i.Immediate())
 	}
 

@@ -56,7 +56,7 @@ func TestStore(t *testing.T) {
 func TestJSR(t *testing.T) {
 	mem := []int16{
 		instruction.NewInstruction(instruction.NOP, 0, 0).ToInt16(),
-		instruction.NewInstruction(instruction.JSR, instruction.AM_IMM, 2).ToInt16(),
+		instruction.NewInstruction(instruction.JSR, instruction.AM_IMM, 3).ToInt16(),
 		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
 		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1).ToInt16(),
 		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
@@ -119,13 +119,30 @@ func TestArithmetic(t *testing.T) {
 	}
 }
 
+func TestRelativeAddressing(t *testing.T) {
+	mem := []int16{
+		instruction.NewNop().ToInt16(),
+		instruction.NewNop().ToInt16(),
+		instruction.NewInstruction(instruction.LD, instruction.AM_REL, 2).ToInt16(),
+		instruction.NewHalt().ToInt16(),
+		-11,
+	}
+
+	v := vm.NewVM(mem)
+	v.Run()
+
+	if v.Accumulator != -11 {
+		t.Fatalf("Unexpected value in accumulator got '%d' expected '%d'\n", v.Accumulator, -11)
+	}
+}
+
 func TestInvalidInstructionTrap(t *testing.T) {
 	mem := make([]int16, 1024*64)
 	for i := 0; i < 1024*64; i++ {
 		mem[i] = int16(instruction.NewInstruction(instruction.NOP, 0, 0))
 	}
 
-	mem[0xFFEE] = math.MaxInt16 //Insert invalid instructon
+	mem[0xFFEE] = math.MaxInt16 //Insert invalid instruction
 
 	v := vm.NewVM(mem)
 	for i := 0; i <= 0xFFEE; i++ {

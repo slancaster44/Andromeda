@@ -2,6 +2,7 @@ package instruction_test
 
 import (
 	"andromeda/toolchain/instruction"
+	"fmt"
 	"testing"
 )
 
@@ -19,4 +20,11 @@ func TestNewInstruction(t *testing.T) {
 		t.Errorf("Expected (%b) for addressing mode got %b\n", instruction.AM_IND, ins.AddressingMode())
 	}
 
+}
+
+func TestPrintInstructionOpcodes(t *testing.T) {
+	for _, v := range instruction.StringOpcodeMap {
+		i := instruction.NewInstruction(v, 0, 0)
+		fmt.Printf("%v: %05b\n", i, i.Opcode())
+	}
 }

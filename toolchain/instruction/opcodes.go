@@ -1,14 +1,14 @@
 package instruction
 
 const (
-	JMP uint8 = iota
-	NOP
+	NOP uint8 = iota
 	LD
 	STORE
 	ADD
 	NAND
 	XOR
 	SUB
+	JMP
 	JSR
 	JNZ
 	JNS
@@ -21,7 +21,7 @@ var OpcodeStringMap = map[uint8]string{
 	LD:    "lda",
 	STORE: "sta",
 	ADD:   "add",
-	NAND:  "nand",
+	NAND:  "nnd",
 	XOR:   "xor",
 	SUB:   "sub",
 	JSR:   "jsr",

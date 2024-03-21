@@ -1,0 +1,191 @@
+\subsection{LDA}\label{subsec:lda}
+    \subsubsection{Description}
+    $Accumulator \leftarrow Operand Value$
+    \par Load the value indicated by the operand and addressing mode fields into the Accumulator.
+
+    \subsubsection{Encoding}
+
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.dir     data
+
+        org(0xFF01)
+    def data:
+        dw(-11)
+    \end{verbatim}
+    \par The above code would result in `-11' being loaded into the Accumulator.
+
+
+\subsection{STA}\label{subsec:sta}
+    \subsubsection{Description}
+    $if\ (AddressingMode \neq IMM)\ \{ *OperandValue \leftarrow Accumulator \}$ \\
+    $else\ \{ *Accumulator \leftarrow OperandValue \}$
+    \par If the addressing mode is not `imm,' then store the contents of the accumulator into the address indicated by
+    the operand value.
+    If the addressing mode is `imm,' the operand value is loaded into the address indicated by the Accumulator.
+
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{ADD}\label{subsec:add}
+    \subsubsection{Description}
+    $Accumulator \leftarrow Accumulator + OperandValue$
+    \par Add the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    Store the result in the Accumulator.
+
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{SUB}\label{subsec:sub}
+    \subsubsection{Description}
+    $Accumulator \leftarrow Accumulator - OperandValue$
+    \par Subtract the value indicated by the operand and addressing fields from the contents of the Accumulator.
+    Store the result in the Accumulator.
+
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{XOR}\label{subsec:xor}
+    \subsubsection{Description}
+    $Accumulator \leftarrow Accumulator \oplus OperandValue$
+    \par Exclusive or the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    Store the result in the Accumulator.
+
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{NND}\label{subsec:nand}
+    \subsubsection{Description}
+    $Accumulator \leftarrow \overline{Accumulator \land OperandValue}$
+    \par Nand the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    Store the result in the Accumulator.
+
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{JMP}\label{subsec:jmp}
+    \subsubsection{Description}
+    $PC \leftarrow OperandValue$
+    \par Load the value indicated by the operand and addressing fields into the program counter.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{JSR}\label{subsec:jsr}
+    \subsubsection{Description}
+    $Accumulator \leftarrow PC$; $PC \leftarrow OperandValue$
+    \par Load the program counter into the Accumulator.
+    Load the operand value into the program counter.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{JNS}\label{subsec:jns}
+    \subsubsection{Description}
+    $if\ (Accumulator \geq 0)\ \{ PC \leftarrow OperandValue \}$
+    \par If the contents of the Accumulator are greater than, or equal to, zero, load the operand value into the PC\@.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{JNZ}\label{subsec:jnz}
+    \subsubsection{Description}
+    $if\ (Accumulator \neq 0)\ \{ PC \leftarrow OperandValue \}$
+    \par If the contents of the Accumulator are not equal to zero, load the operand value into the PC\@.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{HALT}\label{subsec:halt}
+    \subsubsection{Description}
+    $HFF \leftarrow 1$
+    \par Stop the system clock by setting the halt flip-flop.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}
+
+\subsection{NOP}\label{subsec:nop}
+    \subsubsection{Description}
+    $ -- $
+    \par Continue to the next instruction without changing the machine's state.
+    \subsubsection{Encoding}
+    \subsubsection{Process}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
+
+    \subsubsection{Example}
+    \begin{verbatim}
+    \end{verbatim}

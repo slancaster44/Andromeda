@@ -1,0 +1,3 @@
+    org(0xFF00)
+def constants:
+subdef out: dw(0x0010)

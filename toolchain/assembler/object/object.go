@@ -47,7 +47,7 @@ func (c *CodeObject) InsertPatch(location uint16, program_counter uint16) {
 	offset := int(location - c.Origin)
 	if offset < len(c.Code)-1 && offset >= 0 {
 		i := c.Code[offset]
-		if i.AddressingMode() == instruction.AM_IMM && i.IsJmp() {
+		if i.AddressingMode() == instruction.AM_REL {
 			v := uint16(int(program_counter) - int(location))
 			c.Code[offset] = instruction.Instruction((uint16(i) & 0xFF00) + v)
 		} else {

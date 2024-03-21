@@ -67,12 +67,7 @@ func (v *VM) JSR(i int16) {
 }
 
 func (v *VM) JMP(i int16) {
-	ins := instruction.Instruction(v.Memory[v.PC])
-	if ins.AddressingMode() == instruction.AM_IMM {
-		v.PC += uint16(i - 1)
-	} else {
-		v.PC = uint16(i)
-	}
+	v.PC = uint16(i) - 1 //PC increment happens after the execution of the instruction
 }
 
 func (v *VM) JNZ(i int16) {
@@ -96,6 +91,8 @@ func (v *VM) Store() {
 
 	if i.AddressingMode() == instruction.AM_IMM {
 		v.Memory[v.Accumulator] = i.Immediate()
+	} else if i.AddressingMode() == instruction.AM_REL {
+		v.Memory[int(v.PC)+int(i.Immediate())] = v.Accumulator
 	} else if i.AddressingMode() == instruction.AM_DIR {
 		v.Memory[i.Address()] = v.Accumulator
 	} else if i.AddressingMode() == instruction.AM_IND {
@@ -132,6 +129,8 @@ func (v *VM) SingleStep() {
 			val = i.Immediate()
 		} else if i.AddressingMode() == instruction.AM_DIR {
 			val = v.Memory[i.Address()]
+		} else if i.AddressingMode() == instruction.AM_REL {
+			val = v.Memory[int(v.PC)+int(i.Immediate())]
 		} else if i.AddressingMode() == instruction.AM_IND {
 			val = v.Memory[uint16(v.Memory[i.Address()])]
 		} else if i.AddressingMode() == instruction.AM_INC {

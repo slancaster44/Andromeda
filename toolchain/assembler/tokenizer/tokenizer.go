@@ -1,6 +1,9 @@
 package tokenizer
 
+import "strings"
+
 func Tokenize(s string) []Token {
+	s = strings.ToLower(s) //
 
 	var aux func(s string, curPos int, curTokens []Token) []Token
 	aux = func(s string, curPos int, curTokens []Token) []Token {
@@ -129,26 +132,28 @@ var singleCharMap = map[byte]TokenID{
 }
 
 var keywordMap = map[string]TokenID{
-	"org":    TOK_DIR,
-	"equ":    TOK_DIR,
-	"dw":     TOK_DIR,
-	"lda":    TOK_INS,
-	"sta":    TOK_INS,
-	"add":    TOK_INS,
-	"nnd":    TOK_INS,
-	"xor":    TOK_INS,
-	"sub":    TOK_INS,
-	"jsr":    TOK_INS,
-	"jmp":    TOK_INS,
-	"jnz":    TOK_INS,
-	"jns":    TOK_INS,
-	"hlt":    TOK_INS,
-	"nop":    TOK_INS,
-	"def":    TOK_DEF,
-	"subdef": TOK_SUBDEF,
-	"imm":    TOK_ADDR_MODE,
-	"ind":    TOK_ADDR_MODE,
-	"dir":    TOK_ADDR_MODE,
-	"inc":    TOK_ADDR_MODE,
-	"dec":    TOK_ADDR_MODE,
+	"org":     TOK_DIR,
+	"equ":     TOK_DIR,
+	"dw":      TOK_DIR,
+	"include": TOK_DIR,
+	"lda":     TOK_INS,
+	"sta":     TOK_INS,
+	"add":     TOK_INS,
+	"nnd":     TOK_INS,
+	"xor":     TOK_INS,
+	"sub":     TOK_INS,
+	"jsr":     TOK_INS,
+	"jmp":     TOK_INS,
+	"jnz":     TOK_INS,
+	"jns":     TOK_INS,
+	"hlt":     TOK_INS,
+	"nop":     TOK_INS,
+	"def":     TOK_DEF,
+	"subdef":  TOK_SUBDEF,
+	"imm":     TOK_ADDR_MODE,
+	"ind":     TOK_ADDR_MODE,
+	"dir":     TOK_ADDR_MODE,
+	"inc":     TOK_ADDR_MODE,
+	"dec":     TOK_ADDR_MODE,
+	"rel":     TOK_ADDR_MODE,
 }

@@ -29,7 +29,7 @@
     sourced from memory.
     The result of an operation is almost always stored in the accumulator.
     \par The instruction set is slightly more sophisticated than the PDP-8, and is highly orthogonal.
-    It includes twelve instructions with five addressing modes.
+    It includes twelve instructions with six addressing modes.
 
     \subsection{Accumulator}\label{subsec:accumulator}
     \par The Accumulator is a 16-bit wide register.
@@ -40,7 +40,11 @@
     The top-most page ($FF00_{16}$ - $FFFF_{16}$) is directly addressable by most instructions, as a result it
     is used to store the most commonly referenced global variables.
     \par Memory is only addressable in word sized units; memory is not byte addressable, as is common on other machines
+
     \subsection{Instruction Format}\label{subsec:instruction-format}
+    \begin{center}
+        \includegraphics[scale=0.40]{Instruction_Format}
+    \end{center}
     \par Instructions are divided into three fields.
     \begin{itemize}
         \item The Opcode Field (0-4): Indicates the operation to be performed on the data
@@ -48,120 +52,33 @@
         The operand field can be used as an immediate value, or as an address to some other value in memory,
         depending on the addressing mode
         \item The Operand Field (8-15): An 8-bit constant that, in combination with the Addressing Mode Field, is
-        used to determine the second value to use in an operation (the first value being whatever is stored in the Accumulator).
+        used to determine a second value to use in an operation (the first value being the contents of the Accumulator).
     \end{itemize}
 
     \subsection{Representing Numbers}\label{subsec:representing-numbers}
     \par All values will be stored in two's complement form.
     Addition and subtraction will both be two's complement operations.
 
-    \subsection{Addressing Modes}\label{subsec:addressing-modes}
+    \input{addressing}
 
-    \subsubsection{Immediate (IMM)}
-    \par The 8-bit operand field will be sign-extended to 16-bits.
-    It will then immediately be used as the secondary operand for the instruction.
-    \begin{verbatim}
-        org(0x0000)
-    def entry:
-        lda.imm     -12
-        hlt
-    \end{verbatim}`
-    The code above would result in `-12' being loaded into the accumulator.
-    Note: The 16-bit two's complement form of -12 is $1111111111110100_{8}$
 
-    \subsubsection{Memory Direct (DIR)}
-    \par The constant $FF00_{16}$ will be added to the 8-bit operand field.
-    This will yield a 16-bit value in the range $FF00_{16}$ - $FFFF_{16}$ inclusive.
-    This value will then be used as an address.
-    The value stored at that address will be used as the secondary operand for the instruction.
-    \begin{verbatim}
-        org(0x0000)
-    def entry:
-        sta.dir     0x01
-        hlt
-    \end{verbatim}
-    The code above would store the accumulator into the address $FF01_{16}$.
+    \subsection{Reset Sequence}\label{subsec:reset-sequence}
+    \par While the machine is in reset, the reset line on the bus will be held low.
+    After exiting reset, the Accumulator, Instruction Register and Program Counter will
+    be set to zero.
+    The machine will then begin executing code at address $0000_{16}$.
 
-    \subsubsection{Memory Indirect (IND)}
-    The constant $FF00_{16}$ will be added to the 8-bit operand field.
-    This will yield a 16-bit value in the range $FF00_{16}$ - $FFFF_{16}$ inclusive.
-    This value will then be used as an address.
-    The value stored at that address will be used as another address known as the pointer.
-    This value stored at this final pointer address will be used as the secondary operand for the instruction.,
-    \begin{verbatim}
-        org(0x0000)
-    def entry:
-        lda.ind pointer
-        hlt
 
-        org(0xFF01)
-    def pointer:
-        0xD000
-
-        org(0xD000)
-    def final_value:
-        -12
-    \end{verbatim}
-    The code above will result in -12 being loaded into the accumulator.
-    The value stored in address $FF01_{16}$ ($D000_{16}$) was used as an address to find the final value (-12).
-
-    \subsubsection{Memory Indirect \& Auto Increment (INC)}
-    This addressing mode behaves similarly to memory indirect addressing.
-    The secondary operand is obtained in the same manner.
-    However, after the value is obtained, the pointer will be incremented.
-    \begin{verbatim}
-        org(0x0000)
-    def entry:
-        lda.inc pointer
-        hlt
-
-        org(0xFF01)
-    def pointer:
-        0xD000
-
-        org(0xD000)
-    def final_value:
-        -12
-    \end{verbatim}
-    The code above will result in -12 being loaded into the accumulator.
-    However, after the instruction has completed execution, pointer will be incremented to $D001_{16}$
-
-    \subsubsection{Memory Indirect \& Auto Decrement (DEC)}
-    This addressing mode behaves similarly to memory indirect addressing.
-    The secondary operand is obtained in the same manner.
-    However, after the value is obtained, the pointer will be decremented.
-    \begin{verbatim}
-        org(0x0000)
-    def entry:
-        lda.dec pointer
-        hlt
-
-        org(0xFF01)
-    def pointer:
-        0xD000
-
-        org(0xD000)
-    def final_value:
-        -12
-    \end{verbatim}
-    The code above will result in -12 being loaded into the accumulator.
-    However, after the instruction has completed execution, pointer will be decremented to $CFFF_{16}$
-
-    \subsection{Block Diagram}\label{subsec:block-diagram}
+    \subsection{Invalid Instruction Trap}\label{subsec:invalid-instruction-trap}
+    \par Should the machine encounter an invalid instruction, the machine will execute a JSR to address $0002_{16}$.
+    That is, a pointer to the next instruction will be loaded into the accumulator, and $0002_{16}$ will be loaded
+    into the program counter.
     \pagebreak
 
-    \section{Instruction Set}
-    \subsection{LDA}
-    \subsection{STA}
-    \subsection{ADD}
-    \subsection{SUB}
-    \subsection{XOR}
-    \subsection{NAND}
-    \subsection{JMP}
-    \subsection{JSR}
-    \subsection{JNS}
-    \subsection{JNZ}
-    \subsection{HALT}
-    \subsection{NOP}
+    \section{Instruction Set}\label{sec:instruction-set}
+    \input{instructions}
+
+    \subsection{Block Diagram}\label{subsec:block-diagram}
+    \subsection{State Machine Diagrams}\label{subsec:state-machine-diagrams}
 
 \end{document}

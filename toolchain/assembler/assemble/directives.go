@@ -5,6 +5,7 @@ import (
 	"andromeda/toolchain/assembler/tokenizer"
 	"andromeda/toolchain/instruction"
 	"fmt"
+	"os"
 )
 
 func (a *AssemblyContext) handleDirective() {
@@ -16,6 +17,8 @@ func (a *AssemblyContext) handleDirective() {
 		a.handleDataword()
 	case "equ":
 		a.handleEqu()
+	case "include":
+		a.handleInclude()
 	default:
 		a.insertError(fmt.Errorf("Unkown directive '%s'\n", tok.Contents))
 	}
@@ -58,4 +61,23 @@ func (a *AssemblyContext) handleEqu() {
 	obj := a.getCurrentObject()
 	obj.Labels[ident] = uint16(number)
 	a.updatePatches(ident)
+}
+
+func (a *AssemblyContext) handleInclude() {
+	a.checkAndConsume(tokenizer.TOK_LPAREN, "(")
+
+	a.checkAndConsumeByID(tokenizer.TOK_STR)
+	strTok, _ := a.curToken()
+
+	a.checkAndConsume(tokenizer.TOK_RPAREN, ")")
+
+	filename := strTok.Contents
+	bytes, err := os.ReadFile(filename)
+	a.insertError(err)
+
+	fileContents := string(bytes)
+	tokens := tokenizer.Tokenize(fileContents)
+
+	a.Assemble(tokens)
+
 }

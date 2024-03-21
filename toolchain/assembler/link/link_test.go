@@ -26,10 +26,10 @@ func TestLink(t *testing.T) {
 	output, err := NewLinkerContext(0x0000, 20).Link(objects)
 
 	if err != nil {
-		t.Logf("Got assembly error '%v'\n", err)
+		t.Fatalf("Got assembly error '%v'\n", err)
 	}
 
 	if !reflect.DeepEqual(output, expected) {
-		t.Logf("Expected does not match output\n\n%v\n\n%v\n", expected, output)
+		t.Fatalf("Expected does not match output\n\n%v\n\n%v\n", expected, output)
 	}
 }
