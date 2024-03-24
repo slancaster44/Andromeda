@@ -23,8 +23,8 @@
 \pagebreak
 \subsection{STA}\label{subsec:sta}
     \subsubsection{Description}
-    $if\ (AddressingMode \neq IMM)\ \{ *OperandValue \leftarrow Accumulator \}$ \\
-    $else\ \{ *Accumulator \leftarrow OperandValue \}$
+    $if\ (AddressingMode \neq IMM)\ \{ Memory[OperandValue] \leftarrow Accumulator \}$ \\
+    $else\ \{ Memory[Accumulator] \leftarrow OperandValue \}$
     \par If the addressing mode is not `imm,' then store the contents of the accumulator into the address indicated by
     the operand value.
     If the addressing mode is `imm,' the operand value is loaded into the address indicated by the Accumulator.

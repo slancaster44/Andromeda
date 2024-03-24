@@ -6,6 +6,8 @@
 
 \usepackage{graphicx}
 \usepackage{etoolbox}
+\usepackage{adjustbox}
+\usepackage{array}
 
 \makeatletter
 \preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
@@ -15,7 +17,7 @@
 
 \title{
     Andromeda 7400\\
-\large Programmer's Manual}
+\large Manual}
 \date{\today}
 % Packages
 \usepackage{amsmath}
@@ -31,7 +33,7 @@
     \section{Architectural Overview}\label{subsec:archetctural-overview}
     \subsection{Design Goals \& Inspiration}\label{subsec:design-goals-&-inspiration}
     \par The Andromeda 7400 was designed to be a simple computer that could be implemented in TTL logic.
-    It takes heavy design inspirations from minicomputers of the mid to late 20-th century, such as the
+    It takes heavy design inspirations from minicomputers of the mid 20th century, such as the
     DEC PDP-8.
     \par It uses single-address instructions, where one operand resides in an accumulator register, and the other is
     sourced from memory.
@@ -56,7 +58,7 @@
     \par Instructions are divided into three fields, the opcode, addressing mode and operand fields.
     \begin{itemize}
         \item The Opcode Field (0-4): Indicates the operation to be performed on the data
-        \item The Addressing Mode Field (5-7): The Addressing Mode Field determines how the operand field will be used.
+        \item The Addressing Mode Field (5-7): Determines how the operand field will be used.
         The operand field can be used as an immediate value, or as an address to some other value in memory,
         depending on the addressing mode
         \item The Operand Field (8-15): An 8-bit constant that, in combination with the Addressing Mode Field, is

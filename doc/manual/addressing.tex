@@ -69,6 +69,7 @@ The contents of that address will be used as the secondary operand for the instr
 
         org(0x0000)
     def entry:
+        nop
         lda.rel     2
         hlt
     def data:
@@ -103,7 +104,9 @@ def entry:
 
 \end{verbatim}
 The code above would result in `$100_{10}$' in the Accumulator.
-The \texttt{jmp.rel 2} instruction skipped the `\texttt{lda.imm 200}' instruction.
+The \texttt{jmp.rel 2} exists at address $0001_{16}$.
+Adding $0002_{16}$ to that address results in address $0004_{16}$, where the halt instruction exists.
+As a result, Tth \texttt{jmp.rel 2} instruction skipped the `\texttt{lda.imm 200}' instruction.
 This means only the first `\texttt{lda.imm 100}' instruction was executed.
 \pagebreak
 
@@ -147,8 +150,7 @@ The value stored in address $FF01_{16}$ ($D000_{16}$) was used as an address to 
 \begin{verbatim}[jump operation].inc [8-bit immediate]\end{verbatim}
 
 \subsubsection{Description}
-$OperandValue = Memory[Memory[FF00_{16} + Immediate]];$\\
-$Memory[FF00_{16} + Immediate] ++$
+$OperandValue = Memory[Memory[(FF00_{16} + Immediate)++]]$\\
 \par This addressing mode behaves similarly to memory indirect addressing.
 The secondary operand is obtained in the same manner.
 However, after the value is obtained, the pointer will be incremented.
@@ -181,8 +183,7 @@ However, after the instruction has completed execution, pointer will be incremen
 \begin{verbatim}[jump operation].dec [8-bit immediate]\end{verbatim}
 
 \subsubsection{Description}
-$Memory[FF00_{16} + Immediate]--;$\\
-$OperandValue = Memory[Memory[FF00_{16} + Immediate]]$
+$OperandValue = Memory[Memory[--(FF00_{16} + Immediate)]]$
 \par This addressing mode behaves similarly to memory indirect addressing.
 Before the instruction is executed, the pointer will be decremented.
 Then the secondary operand is obtained in the same manner as it is in simple Memory Indirect addressing.
@@ -212,3 +213,23 @@ Pointer will have been decremented to $D000_{16}$ so the `13' could be addressed
 \pagebreak
 
 \subsection{Reference Card}\label{subsec:reference-card}
+\renewcommand{\arraystretch}{2.0}
+\begin{center}
+    \begin{adjustbox}{width=\textwidth}
+        \begin{tabular}{ |c|c|c| }
+            \hline
+            Mnemonic & Operand Value & Encoding \\ \hline
+            \texttt{imm} & $SignExtend(Immediate)$ & - \\ \hline
+            \texttt{dir} & $Memory[FF00_{16} + Immediate]$ & -\\ \hline
+            \texttt{rel} & $Memory[PC + SignExtend(Immediate)]$ & -\\ \hline
+            \texttt{off} & $PC + SignExtend(Immediate)$ & -\\ \hline
+            \texttt{ind} & $Memory[Memory[FF00_{16} + Immediate]]$ & -\\ \hline
+            \texttt{inc} & $Memory[Memory[(FF00_{16} + Immediate)++]]$ & -\\ \hline
+            \texttt{dec} & $Memory[--(Memory[FF00_{16} + Immediate)]]$ & -\\ \hline
+        \end{tabular}
+    \end{adjustbox}
+\end{center}
+
+Note: The table above uses the C/C++ convention for postfixing and prefixing increments (\texttt{++}) and decrements (\texttt{--}).
+\par If the operator appears before the value, the operation is performed before the value is calculated.
+If the operator appears after the value, the operation is performed after the value is calculated.
