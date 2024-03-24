@@ -225,3 +225,28 @@ func TestMultipleObjects(t *testing.T) {
 		t.Fatalf("%v\n%v", expected2, objects[1])
 	}
 }
+
+func TestDollar(t *testing.T) {
+	text :=
+		`
+		org(0x0012)
+		lda.imm $+
+		`
+
+	expected1 := &object.CodeObject{
+		Code: []instruction.Instruction{
+			instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 0x13),
+		},
+		Origin: 0x12,
+		Labels: map[string]uint16{},
+		Errors: map[uint16]error{},
+	}
+
+	tokens := tokenizer.Tokenize(text)
+	objects := NewAssemblyContext().Assemble(tokens)
+
+	if !reflect.DeepEqual(expected1, objects[0]) {
+		t.Log("Expected does not match first object")
+		t.Fatalf("%v\n%v", expected1, objects[0])
+	}
+}

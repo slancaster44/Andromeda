@@ -17,6 +17,8 @@ func (a *AssemblyContext) handleDirective() {
 		a.handleDataword()
 	case "equ":
 		a.handleEqu()
+	case "str":
+		a.handleString()
 	case "include":
 		a.handleInclude()
 	default:
@@ -43,6 +45,21 @@ func (a *AssemblyContext) handleDataword() {
 
 	obj := a.getCurrentObject()
 	obj.Code = append(obj.Code, instruction.Instruction(number))
+}
+
+func (a *AssemblyContext) handleString() {
+	a.checkAndConsume(tokenizer.TOK_LPAREN, "(")
+
+	a.checkAndConsumeByID(tokenizer.TOK_STR)
+	strTok, _ := a.curToken()
+
+	a.checkAndConsume(tokenizer.TOK_RPAREN, ")")
+
+	data := strTok.Contents
+	obj := a.getCurrentObject()
+	for _, char := range data {
+		obj.Code = append(obj.Code, instruction.Instruction(uint16(char)))
+	}
 }
 
 func (a *AssemblyContext) handleEqu() {

@@ -63,10 +63,10 @@ func TestKeyword(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	testString := "(\"Hello\")."
+	testString := "(\"hello\")."
 	expected := []Token{
 		{ID: TOK_LPAREN, Contents: "("},
-		{ID: TOK_STR, Contents: "Hello"},
+		{ID: TOK_STR, Contents: "hello"},
 		{ID: TOK_RPAREN, Contents: ")"},
 		{ID: TOK_DOT, Contents: "."},
 	}
@@ -74,7 +74,7 @@ func TestString(t *testing.T) {
 	results := Tokenize(testString)
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
-			t.Fatalf("%v", v)
+			t.Logf("%v", v)
 		}
 		t.Fatalf("Failed to tokenize strings")
 	}

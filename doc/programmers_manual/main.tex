@@ -3,12 +3,20 @@
 
 % Preamble
 \documentclass[11pt]{article}
+
 \usepackage{graphicx}
+\usepackage{etoolbox}
+
+\makeatletter
+\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+\makeatother
+
+\setcounter{tocdepth}{2}
 
 \title{
     Andromeda 7400\\
 \large Programmer's Manual}
-\date{February 2024}
+\date{\today}
 % Packages
 \usepackage{amsmath}
 
@@ -25,41 +33,39 @@
     \par The Andromeda 7400 was designed to be a simple computer that could be implemented in TTL logic.
     It takes heavy design inspirations from minicomputers of the mid to late 20-th century, such as the
     DEC PDP-8.
-    \par It uses single-address instructions, where one operand resides in the accumulator, and the other is
+    \par It uses single-address instructions, where one operand resides in an accumulator register, and the other is
     sourced from memory.
     The result of an operation is almost always stored in the accumulator.
-    \par The instruction set is slightly more sophisticated than the PDP-8, and is highly orthogonal.
-    It includes twelve instructions with six addressing modes.
+    \par Due to its design inspiration, the instruction set is highly orthogonal.
+    It includes twelve instructions with seven addressing modes.
 
     \subsection{Accumulator}\label{subsec:accumulator}
     \par The Accumulator is a 16-bit wide register.
-    It serves as the an operand to all arithmetic operations, as well as the predicate for conditional jumps.
+    It serves as the an operand and result destination for all arithmetic operations, as well as the predicate for conditional jumps.
 
     \subsection{Memory}\label{subsec:memory}
     \par Memory is organized into 65536 16-bit words.
     The top-most page ($FF00_{16}$ - $FFFF_{16}$) is directly addressable by most instructions, as a result it
     is used to store the most commonly referenced global variables.
-    \par Memory is only addressable in word sized units; memory is not byte addressable, as is common on other machines
+    \par Memory is only addressable in word sized units; memory is not byte addressable, as is common on other machines.
 
     \subsection{Instruction Format}\label{subsec:instruction-format}
     \begin{center}
         \includegraphics[scale=0.40]{Instruction_Format}
     \end{center}
-    \par Instructions are divided into three fields.
+    \par Instructions are divided into three fields, the opcode, addressing mode and operand fields.
     \begin{itemize}
         \item The Opcode Field (0-4): Indicates the operation to be performed on the data
         \item The Addressing Mode Field (5-7): The Addressing Mode Field determines how the operand field will be used.
         The operand field can be used as an immediate value, or as an address to some other value in memory,
         depending on the addressing mode
         \item The Operand Field (8-15): An 8-bit constant that, in combination with the Addressing Mode Field, is
-        used to determine a second value to use in an operation (the first value being the contents of the Accumulator).
+        used to determine the value to use in an operation.
     \end{itemize}
 
     \subsection{Representing Numbers}\label{subsec:representing-numbers}
     \par All values will be stored in two's complement form.
     Addition and subtraction will both be two's complement operations.
-
-    \input{addressing}
 
 
     \subsection{Reset Sequence}\label{subsec:reset-sequence}
@@ -75,10 +81,14 @@
     into the program counter.
     \pagebreak
 
-    \section{Instruction Set}\label{sec:instruction-set}
+    \input{addressing}
+    \pagebreak
     \input{instructions}
 
+    \section{Abstract Description}\label{sec:abstract-description}
     \subsection{Block Diagram}\label{subsec:block-diagram}
     \subsection{State Machine Diagrams}\label{subsec:state-machine-diagrams}
+
+    \section{Hardware}\label{sec:hardware}
 
 \end{document}

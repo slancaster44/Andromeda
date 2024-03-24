@@ -1,15 +1,13 @@
+\section{Instruction Set}\label{sec:instruction-set}
+\pagebreak
 \subsection{LDA}\label{subsec:lda}
+    \subsubsection{Syntax}
+    \begin{verbatim}lda.[addressing mode]   [8-bit immediate] \end{verbatim}
     \subsubsection{Description}
-    $Accumulator \leftarrow Operand Value$
-    \par Load the value indicated by the operand and addressing mode fields into the Accumulator.
+    $Accumulator \leftarrow OperandValue$
+    \par Load the value operand value into the Accumulator.
 
     \subsubsection{Encoding}
-
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
-
     \subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
@@ -22,7 +20,7 @@
     \end{verbatim}
     \par The above code would result in `-11' being loaded into the Accumulator.
 
-
+\pagebreak
 \subsection{STA}\label{subsec:sta}
     \subsubsection{Description}
     $if\ (AddressingMode \neq IMM)\ \{ *OperandValue \leftarrow Accumulator \}$ \\
@@ -32,160 +30,210 @@
     If the addressing mode is `imm,' the operand value is loaded into the address indicated by the Accumulator.
 
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
-
     \subsubsection{Example}
     \begin{verbatim}
     \end{verbatim}
 
+\pagebreak
 \subsection{ADD}\label{subsec:add}
+    \subsubsection{Syntax}
+    \begin{verbatim}add.[addressing mode]   [8-bit immediate]\end{verbatim}
+
     \subsubsection{Description}
     $Accumulator \leftarrow Accumulator + OperandValue$
-    \par Add the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    \par Add the operand value to the contents of the Accumulator.
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     2
+        add.imm     2
+        hlt
     \end{verbatim}
+    \par The above code would result in the number `4' being stored in the Accumulator.
 
+\pagebreak
 \subsection{SUB}\label{subsec:sub}
+    \subsubsection{Syntax}
+    \begin{verbatim}sub.[addressing mode]   [8-bit immediate]\end{verbatim}
+
     \subsubsection{Description}
     $Accumulator \leftarrow Accumulator - OperandValue$
-    \par Subtract the value indicated by the operand and addressing fields from the contents of the Accumulator.
+    \par Subtract the operand value from the contents of the accumulator.
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     2
+        sub.imm     2
+        hlt
     \end{verbatim}
+    \par The above code would result in a `0' in the Accumulator.
 
+\pagebreak
 \subsection{XOR}\label{subsec:xor}
+    \subsubsection{Syntax}
+    \begin{verbatim}xor.[addressing mode]   [8-bit immediate]\end{verbatim}
+
     \subsubsection{Description}
     $Accumulator \leftarrow Accumulator \oplus OperandValue$
-    \par Exclusive or the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    \par Bitwise XOR the operand value and the Accumulator.
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
-
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     0b00001101
+        xor.imm     0b00101110
+        hlt
     \end{verbatim}
+    \par The code above would result in $00100010_{2}$ being stored into the Accumulator.
 
+\pagebreak
 \subsection{NND}\label{subsec:nand}
+    \subsubsection{Syntax}
+    \begin{verbatim}nnd.[addressing mode]   [8-bit immediate] \end{verbatim}
+
     \subsubsection{Description}
     $Accumulator \leftarrow \overline{Accumulator \land OperandValue}$
-    \par Nand the contents of the Accumulator, and the value indicated by the operand and addressing fields.
+    \par Bitwise NAND the operand value and the Accumulator.
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
+
 
     \subsubsection{Example}
     \begin{verbatim}
+            org(0x0000)
+        def entry:
+            lda.imm     0b00001101
+            nnd.imm     0b00101110
+            hlt
     \end{verbatim}
+    \par The code above would result in $11110011_{2}$ being stored in the Accumulator.
 
+\pagebreak
 \subsection{JMP}\label{subsec:jmp}
+    \subsubsection{Syntax}
+    \begin{verbatim}jmp.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $PC \leftarrow OperandValue$
-    \par Load the value indicated by the operand and addressing fields into the program counter.
+    \par Load the value indicated the operand value into the program counter.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     10
+        jmp.rel     0x03
+        add.imm     1
+        hlt
+        add.imm     2
+        hlt
     \end{verbatim}
+    \par The code above would result in `12' in the Accumulator.
+    The jump instruction would skip the `\texttt{add.imm 1}'  and  the first \texttt{hlt} instructions, by jumping to address $0004_{16}$.
+    As a result, the `\texttt{add.imm 2}' instruction would be executed.
 
+\pagebreak
 \subsection{JSR}\label{subsec:jsr}
+    \subsubsection{Syntax}
+    \begin{verbatim}jsr.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
-    $Accumulator \leftarrow PC$; $PC \leftarrow OperandValue$
-    \par Load the program counter into the Accumulator.
+    $Accumulator \leftarrow PC + 1$; $PC \leftarrow OperandValue$
+    \par Load a pointer to the next instruction into the Accumulator.
     Load the operand value into the program counter.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
     \subsubsection{Example}
     \begin{verbatim}
-    \end{verbatim}
+        org(0x0000)
+    def main:
+        jsr.rel     main.my_subroutine
+        ; More instructions for main...
+        hlt
 
+    subdef my_subroutine:
+        sta.dir     0x01
+        ; Do subroutine stuff here
+        jmp.dir     0x01
+    \end{verbatim}
+    \par The code above might show how a typical subroutine call might work.
+    The \texttt{jsr.rel} instruction stores a return address into the accumulator.
+    The called subroutine, \texttt{my\_routine}, saves that return vector into $FF01_{16}$
+    so that the subroutine can return to that address using a \texttt{jmp.dir} instruction.
+
+\pagebreak
 \subsection{JNS}\label{subsec:jns}
+    \subsubsection{Syntax}
+    \begin{verbatim}jns.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $if\ (Accumulator \geq 0)\ \{ PC \leftarrow OperandValue \}$
     \par If the contents of the Accumulator are greater than, or equal to, zero, load the operand value into the PC\@.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
-
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     -2
+        jns.rel     greater_equal_to_zero
+        lda.imm     1
+        hlt
+    def greater_equal_to_zero:
+        lda.imm     2
+        hlt
     \end{verbatim}
+    \par The above code would result in a `1' loaded into the Accumulator.
+    The \texttt{jns.rel} instruction does not cause a jump because the Accumulator
+    is greater than or equal to zero (eg it is not signed).
 
+\pagebreak
 \subsection{JNZ}\label{subsec:jnz}
+    \subsubsection{Syntax}
+    \begin{verbatim}jnz.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $if\ (Accumulator \neq 0)\ \{ PC \leftarrow OperandValue \}$
     \par If the contents of the Accumulator are not equal to zero, load the operand value into the PC\@.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     -2
+        jnz.imm     not_zero
+        lda.imm     1
+        hlt
+    def not_zero:
+        lda.imm     2
+        hlt
     \end{verbatim}
+    The above code would result in a `2' loaded into the Accumulator.
+    A jump to the label \texttt{not\_zero} would occur because the Accumulator
+    contains a non-zero value.
 
+\pagebreak
 \subsection{HALT}\label{subsec:halt}
     \subsubsection{Description}
     $HFF \leftarrow 1$
     \par Stop the system clock by setting the halt flip-flop.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
-
-    \subsubsection{Example}
-    \begin{verbatim}
-    \end{verbatim}
 
 \subsection{NOP}\label{subsec:nop}
     \subsubsection{Description}
     $ -- $
     \par Continue to the next instruction without changing the machine's state.
     \subsubsection{Encoding}
-    \subsubsection{Process}
-    \begin{enumerate}
-        \item
-    \end{enumerate}
 
-    \subsubsection{Example}
-    \begin{verbatim}
-    \end{verbatim}
+\subsection{Reference Card}\label{subsec:reference-card2}

@@ -1,53 +1,129 @@
-\subsection{Addressing Modes}\label{subsec:addressing-modes}
+\section{Addressing Modes}\label{subsec:addressing-modes}
+\par Any addressing mode can be applied to instructions that need a data source.
+The addressing mode determines how that data will be obtained.
 
-\subsubsection{Immediate (IMM)}
+\subsection{Immediate}\label{subsec:immediate-(imm)}
+\subsubsection{Syntax}
+\begin{verbatim}[operation].imm [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = SignExtend(Immediate)$
 \par The 8-bit operand field will be sign-extended to 16-bits.
 It will then immediately be used as the secondary operand for the instruction.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         lda.imm     -12
         hlt
-\end{verbatim}`
-The code above would result in `-12' being loaded into the accumulator.
-Note: The 16-bit two's complement form of -12 is $1111111111110100_{2}$
 
-\subsubsection{Memory Direct (DIR)}
+\end{verbatim}
+The code above would result in `-12' being loaded into the accumulator.
+The 16-bit two's complement form of -12 is $1111111111110100_{2}$.
+This value is the sign-extended version of the 8-bit value `$1111010_{2}$' that was embedded in the instruction's operand field.
+\pagebreak
+
+\subsection{Memory Direct}\label{subsec:memory-direct-(dir)}
+\subsubsection{Syntax}
+\begin{verbatim}[operation].dir [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = Memory[FF00_{16} + Immediate]$
 \par The constant $FF00_{16}$ will be added to the 8-bit operand field.
 This will yield a 16-bit value in the range $FF00_{16}$ - $FFFF_{16}$ inclusive.
 This value will then be used as an address.
 The value stored at that address will be used as the secondary operand for the instruction.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         sta.dir     0x01
         hlt
+
 \end{verbatim}
 The code above would store the accumulator into the address $FF01_{16}$.
+\pagebreak
 
-\subsubsection{Relative Direct (REL)}\label{subsec:relative-direct-(rel)}
+\subsection{Relative Memory Direct}\label{subsec:relative-direct-(rel)}
+
+\subsubsection{Syntax}
+\begin{verbatim}[operation].rel [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = Memory[PC + SignExtend(Immediate)]$
 \par The 8-bit operand field is sign-extended to 16-bits.
 That value is added to the program counter (PC) to yield and address.
 The contents of that address will be used as the secondary operand for the instruction.
+
+\subsubsection{Encoding}
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         lda.rel     2
         hlt
     def data:
         dw(-11)
+
 \end{verbatim}
 The code above would be result in -11 being loaded into the Accumulator.
-The `lda' instruction exists at address $0000_{16}$, adding `2' to this address results in the value $0002_{16}$.
-The value stored at $0002_{16}$ (`-11') is loaded into the Accumulator.
+The `lda' instruction exists at address $0001_{16}$, adding `2' to this address results in the value $0003_{16}$.
+The value stored at $0003_{16}$ (`-11') is loaded into the Accumulator.
+\pagebreak
 
-\subsubsection{Memory Indirect (IND)}
-The constant $FF00_{16}$ will be added to the 8-bit operand field.
+\subsection{Offset}\label{subsec:relative-jump}
+\subsubsection{Syntax}
+\begin{verbatim}[operation].off [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = PC + SignExtend(Immediate)$
+\par The 8-bit operand field is sign-extended to 16-bits.
+That value is added to the program counter (PC) to yield the operand value.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
+\begin{verbatim}
+
+    org(0x0000)
+def entry:
+    lda.imm     100
+    jmp.rel     2
+    lda.imm     200
+    hlt
+
+\end{verbatim}
+The code above would result in `$100_{10}$' in the Accumulator.
+The \texttt{jmp.rel 2} instruction skipped the `\texttt{lda.imm 200}' instruction.
+This means only the first `\texttt{lda.imm 100}' instruction was executed.
+\pagebreak
+
+\subsection{Memory Indirect}\label{subsec:memory-indirect-(ind)}
+\subsubsection{Syntax}
+\begin{verbatim}[jump operation].ind [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = Memory[Memory[FF00_{16} + Immediate]]$
+\par The constant $FF00_{16}$ will be added to the 8-bit operand field.
 This will yield a 16-bit value in the range $FF00_{16}$ - $FFFF_{16}$ inclusive.
 This value will then be used as an address.
 The value stored at that address will be used as another address known as the pointer.
-This value stored at this final pointer address will be used as the secondary operand for the instruction.,
+This value stored at this final pointer address will be used as the secondary operand for the instruction.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         lda.ind pointer
@@ -60,15 +136,28 @@ This value stored at this final pointer address will be used as the secondary op
         org(0xD000)
     def final_value:
         -12
+
 \end{verbatim}
 The code above will result in -12 being loaded into the accumulator.
 The value stored in address $FF01_{16}$ ($D000_{16}$) was used as an address to find the final value (-12).
+\pagebreak
 
-\subsubsection{Memory Indirect \& Auto Increment (INC)}
-This addressing mode behaves similarly to memory indirect addressing.
+\subsection{Memory Indirect \& Auto Increment}\label{subsec:memory-indirect-&-auto-increment-(inc)}
+\subsubsection{Syntax}
+\begin{verbatim}[jump operation].inc [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$OperandValue = Memory[Memory[FF00_{16} + Immediate]];$\\
+$Memory[FF00_{16} + Immediate] ++$
+\par This addressing mode behaves similarly to memory indirect addressing.
 The secondary operand is obtained in the same manner.
 However, after the value is obtained, the pointer will be incremented.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         lda.inc pointer
@@ -81,15 +170,28 @@ However, after the value is obtained, the pointer will be incremented.
         org(0xD000)
     def final_value:
         -12
+
 \end{verbatim}
 The code above will result in -12 being loaded into the accumulator.
 However, after the instruction has completed execution, pointer will be incremented to $D001_{16}$
+\pagebreak
 
-\subsubsection{Auto Decrement \& Memory Indirect (DEC)}
-This addressing mode behaves similarly to memory indirect addressing.
+\subsection{Auto Decrement \& Memory Indirect}\label{subsec:auto-decrement-&-memory-indirect-(dec)}
+\subsubsection{Syntax}
+\begin{verbatim}[jump operation].dec [8-bit immediate]\end{verbatim}
+
+\subsubsection{Description}
+$Memory[FF00_{16} + Immediate]--;$\\
+$OperandValue = Memory[Memory[FF00_{16} + Immediate]]$
+\par This addressing mode behaves similarly to memory indirect addressing.
 Before the instruction is executed, the pointer will be decremented.
 Then the secondary operand is obtained in the same manner as it is in simple Memory Indirect addressing.
+
+\subsubsection{Encoding}
+
+\subsubsection{Example}
 \begin{verbatim}
+
         org(0x0000)
     def entry:
         lda.dec pointer
@@ -97,12 +199,16 @@ Then the secondary operand is obtained in the same manner as it is in simple Mem
 
         org(0xFF01)
     def pointer:
-        0xD000
+        0xD001
 
-        org(0xCFFF)
+        org(0xD000)
     def final_value:
         13
         -12
+
 \end{verbatim}
 The code above will result in 13 being loaded into the accumulator.
-Pointer will have been decremented to $CFFF_{16}$ so the `13' could be addressed indirectly
+Pointer will have been decremented to $D000_{16}$ so the `13' could be addressed indirectly
+\pagebreak
+
+\subsection{Reference Card}\label{subsec:reference-card}

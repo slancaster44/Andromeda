@@ -91,6 +91,21 @@ func TestJMP(t *testing.T) {
 	if v.Accumulator != -3 {
 		t.Fatalf("JMP: Expected -3 in accumulator, got '%d'", v.Accumulator)
 	}
+}
+
+func TestJNZ(t *testing.T) {
+	mem := make([]int16, 1024*64)
+	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1).ToInt16()
+	mem[1] = instruction.NewInstruction(instruction.JNZ, instruction.AM_OFF, 2).ToInt16()
+	mem[2] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 300).ToInt16()
+	mem[3] = instruction.NewHalt().ToInt16()
+
+	v := vm.NewVM(mem)
+	v.Run()
+
+	if v.Accumulator != 1 {
+		t.Fatalf("JNZ: Expected 1 in accumualtor got '%d'\n", v.Accumulator)
+	}
 
 }
 

@@ -129,6 +129,8 @@ func (v *VM) SingleStep() {
 			val = i.Immediate()
 		} else if i.AddressingMode() == instruction.AM_DIR {
 			val = v.Memory[i.Address()]
+		} else if i.AddressingMode() == instruction.AM_OFF {
+			val = int16(int(v.PC) + int(i.Immediate()))
 		} else if i.AddressingMode() == instruction.AM_REL {
 			val = v.Memory[int(v.PC)+int(i.Immediate())]
 		} else if i.AddressingMode() == instruction.AM_IND {
