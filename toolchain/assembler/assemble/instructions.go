@@ -16,7 +16,7 @@ func (a *AssemblyContext) handleInstruction() {
 	}
 
 	var ins instruction.Instruction
-	if opcode == instruction.HALT || opcode == instruction.NOP {
+	if opcode == instruction.HLT || opcode == instruction.NOP {
 		ins = instruction.NewInstruction(opcode, 0, 0)
 	} else {
 		a.checkAndConsume(tokenizer.TOK_DOT, ".")

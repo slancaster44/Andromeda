@@ -12,6 +12,9 @@ $OperandValue = SignExtend(Immediate)$
 It will then immediately be used as the secondary operand for the instruction.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-IMM.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -39,6 +42,9 @@ This value will then be used as an address.
 The value stored at that address will be used as the secondary operand for the instruction.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-DIR.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -64,6 +70,10 @@ That value is added to the program counter (PC) to yield and address.
 The contents of that address will be used as the secondary operand for the instruction.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-REL.drawio}
+\end{center}
+
 \subsubsection{Example}
 \begin{verbatim}
 
@@ -91,6 +101,9 @@ $OperandValue = PC + SignExtend(Immediate)$
 That value is added to the program counter (PC) to yield the operand value.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-OFF.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -98,15 +111,15 @@ That value is added to the program counter (PC) to yield the operand value.
     org(0x0000)
 def entry:
     lda.imm     100
-    jmp.rel     2
+    jmp.off     2
     lda.imm     200
     hlt
 
 \end{verbatim}
 The code above would result in `$100_{10}$' in the Accumulator.
-The \texttt{jmp.rel 2} exists at address $0001_{16}$.
+The \texttt{jmp.off 2} exists at address $0001_{16}$.
 Adding $0002_{16}$ to that address results in address $0004_{16}$, where the halt instruction exists.
-As a result, Tth \texttt{jmp.rel 2} instruction skipped the `\texttt{lda.imm 200}' instruction.
+As a result, Tth \texttt{jmp.off 2} instruction skipped the `\texttt{lda.imm 200}' instruction.
 This means only the first `\texttt{lda.imm 100}' instruction was executed.
 \pagebreak
 
@@ -123,6 +136,9 @@ The value stored at that address will be used as another address known as the po
 This value stored at this final pointer address will be used as the secondary operand for the instruction.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-IND.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -156,6 +172,9 @@ The secondary operand is obtained in the same manner.
 However, after the value is obtained, the pointer will be incremented.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-INC.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -189,6 +208,9 @@ Before the instruction is executed, the pointer will be decremented.
 Then the secondary operand is obtained in the same manner as it is in simple Memory Indirect addressing.
 
 \subsubsection{Encoding}
+\begin{center}
+    \includegraphics[scale=0.40]{img/Andromeda-DEC.drawio}
+\end{center}
 
 \subsubsection{Example}
 \begin{verbatim}
@@ -219,13 +241,13 @@ Pointer will have been decremented to $D000_{16}$ so the `13' could be addressed
         \begin{tabular}{ |c|c|c| }
             \hline
             Mnemonic & Operand Value & Encoding \\ \hline
-            \texttt{imm} & $SignExtend(Immediate)$ & - \\ \hline
-            \texttt{dir} & $Memory[FF00_{16} + Immediate]$ & -\\ \hline
-            \texttt{rel} & $Memory[PC + SignExtend(Immediate)]$ & -\\ \hline
-            \texttt{off} & $PC + SignExtend(Immediate)$ & -\\ \hline
-            \texttt{ind} & $Memory[Memory[FF00_{16} + Immediate]]$ & -\\ \hline
-            \texttt{inc} & $Memory[Memory[(FF00_{16} + Immediate)++]]$ & -\\ \hline
-            \texttt{dec} & $Memory[--(Memory[FF00_{16} + Immediate)]]$ & -\\ \hline
+            \texttt{imm} & $SignExtend(Immediate)$ & $000_{2}$ \\ \hline
+            \texttt{dir} & $Memory[FF00_{16} + Immediate]$ & $001_{2}$\\ \hline
+            \texttt{rel} & $Memory[PC + SignExtend(Immediate)]$ & $010_{2}$\\ \hline
+            \texttt{off} & $PC + SignExtend(Immediate)$ & $011_{2}$\\ \hline
+            \texttt{ind} & $Memory[Memory[FF00_{16} + Immediate]]$ & $100_{2}$\\ \hline
+            \texttt{inc} & $Memory[Memory[(FF00_{16} + Immediate)++]]$ & $101_{2}$\\ \hline
+            \texttt{dec} & $Memory[--(Memory[FF00_{16} + Immediate)]]$ & $110_{2}$\\ \hline
         \end{tabular}
     \end{adjustbox}
 \end{center}

@@ -1,6 +1,6 @@
 \section{Instruction Set}\label{sec:instruction-set}
 \pagebreak
-\subsection{LDA}\label{subsec:lda}
+\subsection{Load Accumulator}\label{subsec:lda}
     \subsubsection{Syntax}
     \begin{verbatim}lda.[addressing mode]   [8-bit immediate] \end{verbatim}
     \subsubsection{Description}
@@ -8,6 +8,10 @@
     \par Load the value operand value into the Accumulator.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-LDA.drawio}
+    \end{center}
+
     \subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
@@ -21,21 +25,27 @@
     \par The above code would result in `-11' being loaded into the Accumulator.
 
 \pagebreak
-\subsection{STA}\label{subsec:sta}
+\subsection{Store Accumulator}\label{subsec:sta}
     \subsubsection{Description}
-    $if\ (AddressingMode \neq IMM)\ \{ Memory[OperandValue] \leftarrow Accumulator \}$ \\
-    $else\ \{ Memory[Accumulator] \leftarrow OperandValue \}$
-    \par If the addressing mode is not `imm,' then store the contents of the accumulator into the address indicated by
-    the operand value.
-    If the addressing mode is `imm,' the operand value is loaded into the address indicated by the Accumulator.
+    $Memory[AddressOf(OperandValue)] \leftarrow Accumulator $ \\
+    \par Store the contents of the accumulator into the address of the operand value.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-STA.drawio}
+    \end{center}
+
     \subsubsection{Example}
     \begin{verbatim}
+        org(0x0000)
+    def entry:
+        lda.imm     -1
+        sta.dir     0x01
     \end{verbatim}
+    \par The code above would result in `-1' being stored into address 0xFF01.
 
 \pagebreak
-\subsection{ADD}\label{subsec:add}
+\subsection{Add}\label{subsec:add}
     \subsubsection{Syntax}
     \begin{verbatim}add.[addressing mode]   [8-bit immediate]\end{verbatim}
 
@@ -45,6 +55,9 @@
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-ADD.drawio}
+    \end{center}
 
     \subsubsection{Example}
     \begin{verbatim}
@@ -57,7 +70,7 @@
     \par The above code would result in the number `4' being stored in the Accumulator.
 
 \pagebreak
-\subsection{SUB}\label{subsec:sub}
+\subsection{Subtract}\label{subsec:sub}
     \subsubsection{Syntax}
     \begin{verbatim}sub.[addressing mode]   [8-bit immediate]\end{verbatim}
 
@@ -67,6 +80,9 @@
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-SUB.drawio}
+    \end{center}
 
     \subsubsection{Example}
     \begin{verbatim}
@@ -79,7 +95,7 @@
     \par The above code would result in a `0' in the Accumulator.
 
 \pagebreak
-\subsection{XOR}\label{subsec:xor}
+\subsection{Exclusive Bitwise Or}\label{subsec:xor}
     \subsubsection{Syntax}
     \begin{verbatim}xor.[addressing mode]   [8-bit immediate]\end{verbatim}
 
@@ -89,6 +105,10 @@
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-XOR.drawio}
+    \end{center}
+
     \subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
@@ -100,7 +120,7 @@
     \par The code above would result in $00100010_{2}$ being stored into the Accumulator.
 
 \pagebreak
-\subsection{NND}\label{subsec:nand}
+\subsection{Inverted Bitwise And}\label{subsec:nand}
     \subsubsection{Syntax}
     \begin{verbatim}nnd.[addressing mode]   [8-bit immediate] \end{verbatim}
 
@@ -110,6 +130,9 @@
     Store the result in the Accumulator.
 
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-NND.drawio}
+    \end{center}
 
 
     \subsubsection{Example}
@@ -123,20 +146,24 @@
     \par The code above would result in $11110011_{2}$ being stored in the Accumulator.
 
 \pagebreak
-\subsection{JMP}\label{subsec:jmp}
+\subsection{Jump}\label{subsec:jmp}
     \subsubsection{Syntax}
     \begin{verbatim}jmp.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $PC \leftarrow OperandValue$
     \par Load the value indicated the operand value into the program counter.
+
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-JMP.drawio}
+    \end{center}
 
     \subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
     def entry:
         lda.imm     10
-        jmp.rel     0x03
+        jmp.off     0x03
         add.imm     1
         hlt
         add.imm     2
@@ -147,7 +174,7 @@
     As a result, the `\texttt{add.imm 2}' instruction would be executed.
 
 \pagebreak
-\subsection{JSR}\label{subsec:jsr}
+\subsection{Jump to Subroutine}\label{subsec:jsr}
     \subsubsection{Syntax}
     \begin{verbatim}jsr.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
@@ -155,12 +182,16 @@
     \par Load a pointer to the next instruction into the Accumulator.
     Load the operand value into the program counter.
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-JSR.drawio}
+    \end{center}
 
-    \subsubsection{Example}
+
+\subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
     def main:
-        jsr.rel     main.my_subroutine
+        jsr.off     main.my_subroutine
         ; More instructions for main...
         hlt
 
@@ -170,24 +201,28 @@
         jmp.dir     0x01
     \end{verbatim}
     \par The code above might show how a typical subroutine call might work.
-    The \texttt{jsr.rel} instruction stores a return address into the accumulator.
+    The \texttt{jsr.off} instruction stores a return address into the accumulator.
     The called subroutine, \texttt{my\_routine}, saves that return vector into $FF01_{16}$
     so that the subroutine can return to that address using a \texttt{jmp.dir} instruction.
 
 \pagebreak
-\subsection{JNS}\label{subsec:jns}
+\subsection{Jump if the Accumulator is Not Signed}\label{subsec:jns}
     \subsubsection{Syntax}
     \begin{verbatim}jns.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $if\ (Accumulator \geq 0)\ \{ PC \leftarrow OperandValue \}$
     \par If the contents of the Accumulator are greater than, or equal to, zero, load the operand value into the PC\@.
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-JNS.drawio}
+    \end{center}
+
     \subsubsection{Example}
     \begin{verbatim}
         org(0x0000)
     def entry:
         lda.imm     -2
-        jns.rel     greater_equal_to_zero
+        jns.off     greater_equal_to_zero
         lda.imm     1
         hlt
     def greater_equal_to_zero:
@@ -195,17 +230,20 @@
         hlt
     \end{verbatim}
     \par The above code would result in a `1' loaded into the Accumulator.
-    The \texttt{jns.rel} instruction does not cause a jump because the Accumulator
+    The \texttt{jns.off} instruction does not cause a jump because the Accumulator
     is greater than or equal to zero (eg it is not signed).
 
 \pagebreak
-\subsection{JNZ}\label{subsec:jnz}
+\subsection{Jump if the Accumulator is Not Zero}\label{subsec:jnz}
     \subsubsection{Syntax}
     \begin{verbatim}jnz.[addressing mode]   [8-bit immediate]\end{verbatim}
     \subsubsection{Description}
     $if\ (Accumulator \neq 0)\ \{ PC \leftarrow OperandValue \}$
     \par If the contents of the Accumulator are not equal to zero, load the operand value into the PC\@.
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-JNZ.drawio}
+    \end{center}
 
     \subsubsection{Example}
     \begin{verbatim}
@@ -224,16 +262,22 @@
     contains a non-zero value.
 
 \pagebreak
-\subsection{HALT}\label{subsec:halt}
+\subsection{Halt}\label{subsec:halt}
     \subsubsection{Description}
     $HFF \leftarrow 1$
     \par Stop the system clock by setting the halt flip-flop.
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-HLT.drawio}
+    \end{center}
 
-\subsection{NOP}\label{subsec:nop}
+\subsection{No Operation}\label{subsec:nop}
     \subsubsection{Description}
     $ -- $
     \par Continue to the next instruction without changing the machine's state.
     \subsubsection{Encoding}
+    \begin{center}
+        \includegraphics[scale=0.40]{img/Andromeda-NOP.drawio}
+    \end{center}
 
 \subsection{Reference Card}\label{subsec:reference-card2}

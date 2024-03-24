@@ -18,8 +18,8 @@ func TestLink(t *testing.T) {
 		`
 
 	expected := make([]instruction.Instruction, 20)
-	expected[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1)
-	expected[3] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 2)
+	expected[0] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 1)
+	expected[3] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 2)
 
 	tokens := tokenizer.Tokenize(text)
 	objects := assemble.NewAssemblyContext().Assemble(tokens)

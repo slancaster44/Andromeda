@@ -16,7 +16,7 @@ func NewInstruction(opcode uint8, addressing_mode byte, immediate int) Instructi
 }
 
 func NewHalt() Instruction {
-	return NewInstruction(HALT, 0, 0)
+	return NewInstruction(HLT, 0, 0)
 }
 
 func NewNop() Instruction {
@@ -53,8 +53,8 @@ func (i Instruction) ToInt16() int16 {
 }
 
 func (i Instruction) IsValid() bool {
-	if i.Opcode() == HALT {
-		return i == NewInstruction(HALT, 0, 0)
+	if i.Opcode() == HLT {
+		return i == NewInstruction(HLT, 0, 0)
 	} else if i.Opcode() == NOP {
 		return i == NewInstruction(NOP, 0, 0)
 	}
@@ -79,7 +79,7 @@ func (i Instruction) IsValid() bool {
 }
 
 func (i Instruction) String() string {
-	if i.Opcode() == HALT {
+	if i.Opcode() == HLT {
 		return "hlt"
 	} else if i.Opcode() == NOP {
 		return "nop"

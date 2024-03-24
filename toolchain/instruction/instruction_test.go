@@ -7,9 +7,9 @@ import (
 )
 
 func TestNewInstruction(t *testing.T) {
-	ins := instruction.NewInstruction(instruction.LD, instruction.AM_IND, -23)
-	if ins.Opcode() != instruction.LD {
-		t.Errorf("Opcode Write. Expected LDA (%016b) got %016b for %016b", instruction.LD, ins.Opcode(), ins)
+	ins := instruction.NewInstruction(instruction.LDA, instruction.AM_IND, -23)
+	if ins.Opcode() != instruction.LDA {
+		t.Errorf("Opcode Write. Expected LDA (%016b) got %016b for %016b", instruction.LDA, ins.Opcode(), ins)
 	}
 
 	if ins.Immediate() != int16(-23) {

@@ -22,17 +22,17 @@ func NewVM(memory_image []int16) *VM {
 	vm.HFF = false
 
 	vm.Operations = map[uint8]func(int16){
-		instruction.NOP:  vm.NOP,
-		instruction.LD:   vm.LD,
-		instruction.ADD:  vm.ADD,
-		instruction.NAND: vm.NAND,
-		instruction.XOR:  vm.XOR,
-		instruction.SUB:  vm.SUB,
-		instruction.JSR:  vm.JSR,
-		instruction.JMP:  vm.JMP,
-		instruction.JNS:  vm.JNS,
-		instruction.JNZ:  vm.JNZ,
-		instruction.HALT: vm.HALT,
+		instruction.NOP: vm.NOP,
+		instruction.LDA: vm.LD,
+		instruction.ADD: vm.ADD,
+		instruction.NND: vm.NAND,
+		instruction.XOR: vm.XOR,
+		instruction.SUB: vm.SUB,
+		instruction.JSR: vm.JSR,
+		instruction.JMP: vm.JMP,
+		instruction.JNS: vm.JNS,
+		instruction.JNZ: vm.JNZ,
+		instruction.HLT: vm.HALT,
 	}
 
 	return vm
@@ -90,7 +90,7 @@ func (v *VM) Store() {
 	i := instruction.Instruction(v.Memory[v.PC])
 
 	if i.AddressingMode() == instruction.AM_IMM {
-		v.Memory[v.Accumulator] = i.Immediate()
+		v.Memory[i.Immediate()] = v.Accumulator
 	} else if i.AddressingMode() == instruction.AM_REL {
 		v.Memory[int(v.PC)+int(i.Immediate())] = v.Accumulator
 	} else if i.AddressingMode() == instruction.AM_DIR {
@@ -119,7 +119,7 @@ func (v *VM) SingleStep() {
 		return
 	} else if !i.IsValid() {
 		v.InvalidInstructionTrap()
-	} else if i.Opcode() == instruction.STORE {
+	} else if i.Opcode() == instruction.STA {
 		v.Store()
 	} else {
 		op := v.Operations[i.Opcode()]

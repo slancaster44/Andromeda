@@ -1,42 +1,42 @@
 package instruction
 
 const (
-	NOP uint8 = iota
-	LD
-	STORE
-	ADD
-	NAND
-	XOR
-	SUB
-	JMP
-	JSR
-	JNZ
-	JNS
-	HALT
+	NOP uint8 = 0b00000
+	LDA       = 0b00001
+	STA       = 0b00010
+	ADD       = 0b00011
+	NND       = 0b00100
+	XOR       = 0b00101
+	SUB       = 0b00110
+	JMP       = 0b00111
+	JSR       = 0b01000
+	JNZ       = 0b01001
+	JNS       = 0b01010
+	HLT       = 0b01011
 )
 
 var OpcodeStringMap = map[uint8]string{
-	HALT:  "hlt",
-	NOP:   "nop",
-	LD:    "lda",
-	STORE: "sta",
-	ADD:   "add",
-	NAND:  "nnd",
-	XOR:   "xor",
-	SUB:   "sub",
-	JSR:   "jsr",
-	JMP:   "jmp",
-	JNZ:   "jnz",
-	JNS:   "jns",
+	HLT: "hlt",
+	NOP: "nop",
+	LDA: "lda",
+	STA: "sta",
+	ADD: "add",
+	NND: "nnd",
+	XOR: "xor",
+	SUB: "sub",
+	JSR: "jsr",
+	JMP: "jmp",
+	JNZ: "jnz",
+	JNS: "jns",
 }
 
 var StringOpcodeMap = map[string]uint8{
-	"hlt": HALT,
+	"hlt": HLT,
 	"nop": NOP,
-	"lda": LD,
-	"sta": STORE,
+	"lda": LDA,
+	"sta": STA,
 	"add": ADD,
-	"nnd": NAND,
+	"nnd": NND,
 	"xor": XOR,
 	"sub": SUB,
 	"jsr": JSR,

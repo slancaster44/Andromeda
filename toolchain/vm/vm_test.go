@@ -9,9 +9,9 @@ import (
 
 func TestLD(t *testing.T) {
 	mem := make([]int16, 64*1024) /* TODO: Auto increment & decrement */
-	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 2).ToInt16()
-	mem[1] = instruction.NewInstruction(instruction.LD, instruction.AM_DIR, 3).ToInt16()
-	mem[2] = instruction.NewInstruction(instruction.LD, instruction.AM_IND, 4).ToInt16()
+	mem[0] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 2).ToInt16()
+	mem[1] = instruction.NewInstruction(instruction.LDA, instruction.AM_DIR, 3).ToInt16()
+	mem[2] = instruction.NewInstruction(instruction.LDA, instruction.AM_IND, 4).ToInt16()
 	mem[5] = -11
 	mem[0xFF03] = 32
 	mem[0xFF04] = 5
@@ -39,8 +39,8 @@ func TestStore(t *testing.T) {
 	constant := -2
 
 	mem := make([]int16, 64*1024)
-	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, constant).ToInt16()
-	mem[1] = instruction.NewInstruction(instruction.STORE, instruction.AM_IND, 2).ToInt16()
+	mem[0] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, constant).ToInt16()
+	mem[1] = instruction.NewInstruction(instruction.STA, instruction.AM_IND, 2).ToInt16()
 	mem[0xFF02] = int16(location)
 
 	v := vm.NewVM(mem)
@@ -57,9 +57,9 @@ func TestJSR(t *testing.T) {
 	mem := []int16{
 		instruction.NewInstruction(instruction.NOP, 0, 0).ToInt16(),
 		instruction.NewInstruction(instruction.JSR, instruction.AM_IMM, 3).ToInt16(),
-		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
-		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1).ToInt16(),
-		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
+		instruction.NewInstruction(instruction.HLT, 0, 0).ToInt16(),
+		instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 1).ToInt16(),
+		instruction.NewInstruction(instruction.HLT, 0, 0).ToInt16(),
 	}
 
 	v := vm.NewVM(mem)
@@ -78,8 +78,8 @@ func TestJMP(t *testing.T) {
 	mem := make([]int16, 1024*64)
 	mem[0x0000] = instruction.NewInstruction(instruction.JMP, instruction.AM_DIR, 1).ToInt16()
 	mem[0xFF01] = 0x0FEC
-	mem[0x0FEC] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, -3).ToInt16()
-	mem[0x0FED] = instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16()
+	mem[0x0FEC] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, -3).ToInt16()
+	mem[0x0FED] = instruction.NewInstruction(instruction.HLT, 0, 0).ToInt16()
 
 	v := vm.NewVM(mem)
 	v.Run()
@@ -95,9 +95,9 @@ func TestJMP(t *testing.T) {
 
 func TestJNZ(t *testing.T) {
 	mem := make([]int16, 1024*64)
-	mem[0] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1).ToInt16()
+	mem[0] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 1).ToInt16()
 	mem[1] = instruction.NewInstruction(instruction.JNZ, instruction.AM_OFF, 2).ToInt16()
-	mem[2] = instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 300).ToInt16()
+	mem[2] = instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 300).ToInt16()
 	mem[3] = instruction.NewHalt().ToInt16()
 
 	v := vm.NewVM(mem)
@@ -110,16 +110,16 @@ func TestJNZ(t *testing.T) {
 }
 
 func TestArithmetic(t *testing.T) {
-	//Test Series: 4 + -2 NAND 110 XOR 0xFFEE - 11
+	//Test Series: 4 + -2 NND 110 XOR 0xFFEE - 11
 	//Result should be 8
 
 	mem := []int16{
-		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 4).ToInt16(),
+		instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 4).ToInt16(),
 		instruction.NewInstruction(instruction.ADD, instruction.AM_IMM, -2).ToInt16(),
-		instruction.NewInstruction(instruction.NAND, instruction.AM_IMM, 110).ToInt16(),
+		instruction.NewInstruction(instruction.NND, instruction.AM_IMM, 110).ToInt16(),
 		instruction.NewInstruction(instruction.XOR, instruction.AM_IMM, 0xFFEE).ToInt16(),
 		instruction.NewInstruction(instruction.SUB, instruction.AM_IMM, 11).ToInt16(),
-		instruction.NewInstruction(instruction.HALT, 0, 0).ToInt16(),
+		instruction.NewInstruction(instruction.HLT, 0, 0).ToInt16(),
 	}
 
 	v := vm.NewVM(mem)
@@ -138,7 +138,7 @@ func TestRelativeAddressing(t *testing.T) {
 	mem := []int16{
 		instruction.NewNop().ToInt16(),
 		instruction.NewNop().ToInt16(),
-		instruction.NewInstruction(instruction.LD, instruction.AM_REL, 2).ToInt16(),
+		instruction.NewInstruction(instruction.LDA, instruction.AM_REL, 2).ToInt16(),
 		instruction.NewHalt().ToInt16(),
 		-11,
 	}

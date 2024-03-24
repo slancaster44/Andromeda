@@ -80,9 +80,9 @@ func TestDefines(t *testing.T) {
 		sta.dir 0x70
 		`
 	expectedInstruction := []instruction.Instruction{
-		instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1),
+		instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 1),
 		instruction.NewInstruction(instruction.ADD, instruction.AM_IMM, 2),
-		instruction.NewInstruction(instruction.STORE, instruction.AM_DIR, 0x70),
+		instruction.NewInstruction(instruction.STA, instruction.AM_DIR, 0x70),
 	}
 
 	expectedLabel := map[string]uint16{
@@ -134,7 +134,7 @@ func TestLabels(t *testing.T) {
 	def forward: hlt`
 
 	expectedInstruction := []instruction.Instruction{
-		instruction.NewInstruction(instruction.LD, instruction.AM_DIR, 3),
+		instruction.NewInstruction(instruction.LDA, instruction.AM_DIR, 3),
 		instruction.NewInstruction(instruction.JMP, instruction.AM_REL, -1),
 		instruction.NewInstruction(instruction.JMP, instruction.AM_REL, 2),
 		instruction.Instruction(11),
@@ -192,7 +192,7 @@ func TestMultipleObjects(t *testing.T) {
 
 	expected1 := &object.CodeObject{
 		Code: []instruction.Instruction{
-			instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 1),
+			instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 1),
 		},
 		Origin: 0,
 		Labels: map[string]uint16{},
@@ -201,7 +201,7 @@ func TestMultipleObjects(t *testing.T) {
 
 	expected2 := &object.CodeObject{
 		Code: []instruction.Instruction{
-			instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 2),
+			instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 2),
 		},
 		Origin: 3,
 		Labels: map[string]uint16{},
@@ -235,7 +235,7 @@ func TestDollar(t *testing.T) {
 
 	expected1 := &object.CodeObject{
 		Code: []instruction.Instruction{
-			instruction.NewInstruction(instruction.LD, instruction.AM_IMM, 0x13),
+			instruction.NewInstruction(instruction.LDA, instruction.AM_IMM, 0x13),
 		},
 		Origin: 0x12,
 		Labels: map[string]uint16{},
