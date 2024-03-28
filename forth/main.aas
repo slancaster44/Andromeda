@@ -1,0 +1,13 @@
+
+    org     (0x0000)
+    include ("registers.aas")
+def reset:
+    jmp.off     reset.cold_start
+    nop
+subdef inv_inst:                    ; Invalid Instruction Trap
+    hlt                             ; For now, just a simple halt will do
+
+subdef cold_start:
+    lda.imm     $                   ;Save the reset vector
+    sta.dir     reset
+    hlt

@@ -2,7 +2,8 @@
 %! Date = 3/18/24
 
 % Preamble
-\documentclass[11pt]{article}
+\documentclass{article}
+\usepackage[left=3cm, right=3cm]{geometry}
 
 \usepackage{graphicx}
 \usepackage{etoolbox}
@@ -86,10 +87,7 @@
     \input{addressing}
     \pagebreak
     \input{instructions}
-
-    \section{Abstract Description}\label{sec:abstract-description}
-    \subsection{Block Diagram}\label{subsec:block-diagram}
-    \subsection{State Machine Diagrams}\label{subsec:state-machine-diagrams}
+    \input{abstract_description}
 
     \section{Hardware}\label{sec:hardware}
 

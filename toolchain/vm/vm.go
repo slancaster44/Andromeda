@@ -3,14 +3,18 @@ package vm
 import (
 	"andromeda/toolchain/instruction"
 	"fmt"
+	"os"
+	"os/exec"
 )
 
 type VM struct {
-	Memory      [64 * 1024]int16
-	Accumulator int16
-	PC          uint16
-	Operations  map[uint8]func(int16)
-	HFF         bool
+	Memory        [64 * 1024]int16
+	Accumulator   int16
+	PC            uint16
+	Operations    map[uint8]func(int16)
+	HFF           bool
+	OutputDevices map[uint16]func(int16)
+	InputDevices  map[uint16]func() int16
 }
 
 func NewVM(memory_image []int16) *VM {
@@ -33,9 +37,43 @@ func NewVM(memory_image []int16) *VM {
 		instruction.JNS: vm.JNS,
 		instruction.JNZ: vm.JNZ,
 		instruction.HLT: vm.HALT,
+		instruction.OUT: vm.OUT,
+		instruction.INP: vm.IN,
+	}
+
+	vm.InputDevices = map[uint16]func() int16{
+		0x0000: vm.SerialIn,
+	}
+
+	vm.OutputDevices = map[uint16]func(int16){
+		0x0000: vm.SerialOut,
 	}
 
 	return vm
+}
+
+func (v *VM) SerialIn() int16 {
+	err := exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
+	if err != nil {
+		panic(err)
+	}
+
+	err = exec.Command("stty", "-F", "/dev/tty", "echo").Run()
+	if err != nil {
+		panic(err)
+	}
+
+	outBuf := make([]byte, 1)
+	_, err = os.Stdin.Read(outBuf)
+	if err != nil {
+		panic(err)
+	}
+
+	return int16(outBuf[0])
+}
+
+func (v *VM) SerialOut(i int16) {
+	fmt.Printf("%c", byte(i))
 }
 
 func (v *VM) NOP(i int16) {}
@@ -86,6 +124,16 @@ func (v *VM) HALT(i int16) {
 	v.HFF = true
 }
 
+func (v *VM) OUT(i int16) {
+	fn := v.OutputDevices[uint16(i)]
+	fn(v.Accumulator)
+}
+
+func (v *VM) IN(i int16) {
+	fn := v.InputDevices[uint16(i)]
+	v.Accumulator = fn()
+}
+
 func (v *VM) Store() {
 	i := instruction.Instruction(v.Memory[v.PC])
 
@@ -107,9 +155,9 @@ func (v *VM) Store() {
 }
 
 func (v *VM) InvalidInstructionTrap() {
-	fmt.Printf("Invalid Instruction at '0x%X'\n", v.PC-1)
+	fmt.Printf("Invalid Instruction at '0x%X'\n", v.PC)
 	v.Accumulator = int16(v.PC + 1)
-	v.PC = 2
+	v.PC = 1
 }
 
 func (v *VM) SingleStep() {

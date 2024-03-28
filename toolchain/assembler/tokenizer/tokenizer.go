@@ -151,6 +151,8 @@ var keywordMap = map[string]TokenID{
 	"jns":     TOK_INS,
 	"hlt":     TOK_INS,
 	"nop":     TOK_INS,
+	"inp":     TOK_INS,
+	"out":     TOK_INS,
 	"def":     TOK_DEF,
 	"subdef":  TOK_SUBDEF,
 	"imm":     TOK_ADDR_MODE,

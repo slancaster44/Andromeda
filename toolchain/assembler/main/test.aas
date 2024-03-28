@@ -1,12 +1,4 @@
     org(0x0000)
 def main:
-    lda.imm    1
-    sta.inc    constants.out
-    jmp.imm    main
-    hlt
-
-subdef not_equal:
-    lda.imm    0
-    hlt
-
-    include("test_inc.aas")
+    inp.imm  0x00
+    out.imm 0x00

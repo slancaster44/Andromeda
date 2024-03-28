@@ -1,0 +1,8 @@
+
+	org	0x0
+	hlt                     ; 0x0000 (0x5800)
+
+.cold_start: ; Defined as 0x0001
+	lda.imm 1               ; 0x0001 (0x0801)
+	sta.dir 0x10            ; 0x0002 (0x1110)
+	hlt                     ; 0x0003 (0x5800)

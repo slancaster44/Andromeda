@@ -164,7 +164,7 @@ func TestInvalidInstructionTrap(t *testing.T) {
 		v.SingleStep()
 	}
 
-	if v.PC != 3 {
+	if v.PC != 2 {
 		t.Fatalf("Failed to trigger invalid instruction trap, pc at address '0x%X'", v.PC)
 	}
 

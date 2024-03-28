@@ -1,5 +1,4 @@
 \section{Instruction Set}\label{sec:instruction-set}
-\pagebreak
 \subsection{Load Accumulator}\label{subsec:lda}
     \subsubsection{Syntax}
     \begin{verbatim}lda.[addressing mode]   [8-bit immediate] \end{verbatim}
@@ -27,8 +26,8 @@
 \pagebreak
 \subsection{Store Accumulator}\label{subsec:sta}
     \subsubsection{Description}
-    $Memory[AddressOf(OperandValue)] \leftarrow Accumulator $ \\
-    \par Store the contents of the accumulator into the address of the operand value.
+    $OperandValue \leftarrow Accumulator $ \\
+    \par Store the contents of the accumulator into the operand value.
 
     \subsubsection{Encoding}
     \begin{center}
@@ -250,7 +249,7 @@
         org(0x0000)
     def entry:
         lda.imm     -2
-        jnz.imm     not_zero
+        jnz.off     not_zero
         lda.imm     1
         hlt
     def not_zero:
@@ -263,6 +262,8 @@
 
 \pagebreak
 \subsection{Halt}\label{subsec:halt}
+    \subsubsection{Syntax}
+    \begin{verbatim}hlt\end{verbatim}
     \subsubsection{Description}
     $HFF \leftarrow 1$
     \par Stop the system clock by setting the halt flip-flop.
@@ -272,6 +273,8 @@
     \end{center}
 
 \subsection{No Operation}\label{subsec:nop}
+    \subsubsection{Syntax}
+    \begin{verbatim}nop\end{verbatim}
     \subsubsection{Description}
     $ -- $
     \par Continue to the next instruction without changing the machine's state.
@@ -280,4 +283,31 @@
         \includegraphics[scale=0.40]{img/Andromeda-NOP.drawio}
     \end{center}
 
+\pagebreak
 \subsection{Reference Card}\label{subsec:reference-card2}
+\renewcommand{\arraystretch}{2.0}
+\begin{center}
+    \begin{adjustbox}{width=\textwidth}
+        \begin{tabular}{ |c|c|c| }
+            \hline
+            Mnemonic & Effect & Opcode Encoding \\ \hline
+            \texttt{lda} & $Accumulator \leftarrow OperandValue$ & $00001_{2}$ \\ \hline
+            \texttt{sta} & $OperandValue \leftarrow Accumulator $ & $00010_{2}$\\ \hline
+            \texttt{add} & $Accumulator \leftarrow Accumulator + OperandValue$ & $00011_{2}$\\ \hline
+            \texttt{sub} & $Accumulator \leftarrow Accumulator - OperandValue$ & $00110_{2}$\\ \hline
+            \texttt{xor} & $Accumulator \leftarrow Accumulator \oplus OperandValue$ & $00101_{2}$\\ \hline
+            \texttt{nnd} & $Accumulator \leftarrow \overline{Accumulator \land OperandValue}$ & $00100_{2}$\\ \hline
+            \texttt{jmp} & $PC \leftarrow OperandValue$ & $00111_{2}$\\ \hline
+
+            \texttt{jsr} & $Accumulator \leftarrow PC + 1$; $PC \leftarrow OperandValue$ & $01000_{2}$\\ \hline
+            \texttt{jns} & $if\ (Accumulator \geq 0)\ \{ PC \leftarrow OperandValue \}$ & $01010_{2}$\\ \hline
+            \texttt{jnz} & $if\ (Accumulator \neq 0)\ \{ PC \leftarrow OperandValue \}$ & $01001_{2}$\\ \hline
+
+
+            \texttt{hlt} & $HFF \leftarrow 1$ & $0101100000000000_{2}$\\ \hline
+            \texttt{nop} & $ -- $ & $0000000000000000_{2}$\\ \hline
+
+        \end{tabular}
+    \end{adjustbox}
+\end{center}
+\pagebreak

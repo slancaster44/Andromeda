@@ -13,6 +13,8 @@ const (
 	JNZ       = 0b01001
 	JNS       = 0b01010
 	HLT       = 0b01011
+	INP       = 0b01100
+	OUT       = 0b01101
 )
 
 var OpcodeStringMap = map[uint8]string{
@@ -28,6 +30,8 @@ var OpcodeStringMap = map[uint8]string{
 	JMP: "jmp",
 	JNZ: "jnz",
 	JNS: "jns",
+	INP: "inp",
+	OUT: "out",
 }
 
 var StringOpcodeMap = map[string]uint8{
@@ -43,4 +47,6 @@ var StringOpcodeMap = map[string]uint8{
 	"jmp": JMP,
 	"jnz": JNZ,
 	"jns": JNS,
+	"out": OUT,
+	"inp": INP,
 }

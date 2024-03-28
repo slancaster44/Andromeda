@@ -1,0 +1,5 @@
+
+
+    equ(reset, 0x0010)      ;; Location for the the reset vector
+    equ(tp, 0x0011)         ;; Location for the thread pointer
+    equ(sp, 0x0012)         ;; Location for the stack pointer
