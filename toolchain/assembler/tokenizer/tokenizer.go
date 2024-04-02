@@ -131,6 +131,7 @@ var singleCharMap = map[byte]TokenID{
 	',':  TOK_COMMA,
 	'$':  TOK_DOLLAR,
 	'+':  TOK_PLUS,
+	'-':  TOK_MINUS,
 }
 
 var keywordMap = map[string]TokenID{

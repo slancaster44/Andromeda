@@ -1,8 +1,7 @@
 package main
 
 import (
-	"andromeda/toolchain/assembler/assemble"
-	"andromeda/toolchain/assembler/link"
+	"andromeda/toolchain/assembler/assembler"
 	"andromeda/toolchain/assembler/tokenizer"
 	"encoding/binary"
 	"fmt"
@@ -23,7 +22,7 @@ func readFile(filename string) string {
 func main() {
 
 	if len(os.Args) != 4 {
-		fmt.Println("Usage: [filename] [rom_origin_in_hex] [rom_size_in_bytes]")
+		fmt.Println("Usage: [filename] [origin] [rom_size_in_bytes]")
 		os.Exit(1)
 	}
 
@@ -31,55 +30,28 @@ func main() {
 	text := strings.ToLower(readFile(filename))
 
 	tokens := tokenizer.Tokenize(text)
-	objects := assemble.NewAssemblyContext().Assemble(tokens)
+	output := assembler.Assemble(tokens)
+	code := output.Code
 
-	lst, err := os.Create("a.lst")
-	if err != nil {
-		panic(err)
-	}
-	defer func(f *os.File) {
-		err := f.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(lst)
-
-	for _, o := range objects {
-		_, err := lst.WriteString(o.String())
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	origin, err := strconv.ParseUint(os.Args[2], 16, 16)
+	origin, err := strconv.ParseUint(os.Args[2], 10, 16)
 	if err != nil {
 		panic(err)
 	}
 
-	romSize, err := strconv.ParseUint(os.Args[3], 10, 16)
+	top, err := strconv.ParseUint(os.Args[3], 10, 16)
 	if err != nil {
 		panic(err)
 	}
 
-	romImage, err := link.NewLinkerContext(uint16(origin), uint16(romSize)).Link(objects)
+	var fileBuffer []byte
+	for i := origin; i <= top; i++ {
+		buffer := make([]byte, 2)
+		binary.BigEndian.PutUint16(buffer, code[i])
+		fileBuffer = append(fileBuffer, buffer...)
+	}
+
+	err = os.WriteFile("a.bin", fileBuffer, 0664)
 	if err != nil {
 		panic(err)
 	}
-
-	f, err := os.Create("a.bin")
-	if err != nil {
-		panic(err)
-	}
-	defer func(f *os.File) {
-		err := f.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(f)
-
-	err = binary.Write(f, binary.BigEndian, romImage)
-	if err != nil {
-		panic(err)
-	}
-
 }

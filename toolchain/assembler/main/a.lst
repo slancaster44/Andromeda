@@ -1,6 +1,0 @@
-
-	org	0x0
-
-main: ; Defined as 0x0000
-	inp.imm 0               ; 0x0000 (0x6000)
-	out.imm 0               ; 0x0001 (0x6800)

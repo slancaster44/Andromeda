@@ -1,4 +1,15 @@
-    org(0x0000)
-def main:
-    inp.imm  0x00
-    out.imm 0x00
+    org     (0x0000)
+def reset:
+    jmp.off     reset.cold_start
+
+    org(0x0002)
+subdef inv_inst:                    ; Invalid Instruction Trap
+    hlt                             ; For now, just a simple halt will do
+
+subdef cold_start:
+    lda.imm     $                   ;Save the reset vector
+    sta.dir     0x01
+    hlt
+
+    dw(11)
+subdef end:
