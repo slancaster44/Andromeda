@@ -29,9 +29,13 @@ func main() {
 	filename := os.Args[1]
 	text := strings.ToLower(readFile(filename))
 
-	tokens := tokenizer.Tokenize(text)
+	tokens := tokenizer.Tokenize(text, filename)
 	output := assembler.Assemble(tokens)
 	code := output.Code
+
+	for _, e := range output.Errors {
+		fmt.Printf("%s\n", e)
+	}
 
 	origin, err := strconv.ParseUint(os.Args[2], 10, 16)
 	if err != nil {

@@ -1,44 +1,67 @@
 package tokenizer
 
-import "strings"
+import (
+	"strings"
+)
 
-func Tokenize(s string) []Token {
-	s = strings.ToLower(s) //
+type Tokenizer struct {
+	fileContents string
+	filename     string
+	curLine      int
+	curPos       int
+	curTokens    []Token
+}
 
-	var aux func(s string, curPos int, curTokens []Token) []Token
-	aux = func(s string, curPos int, curTokens []Token) []Token {
-		if curPos >= len(s) {
-			return curTokens
+func Tokenize(s string, filename string) []Token {
+	s = strings.ToLower(s)
+	tokenizer := &Tokenizer{
+		fileContents: s,
+		filename:     filename,
+		curLine:      1,
+		curPos:       0,
+		curTokens:    make([]Token, 0),
+	}
+
+	var aux func(tokenizer *Tokenizer) []Token
+	aux = func(t *Tokenizer) []Token {
+		if t.curPos >= len(s) {
+			return t.curTokens
 		}
 
-		curChar := s[curPos]
+		curChar := s[t.curPos]
 		possibleId, ok := singleCharMap[curChar]
 		if ok {
-			tok := Token{ID: possibleId, Contents: string(curChar)}
-			curTokens = append(curTokens, tok)
-			return aux(s, curPos+1, curTokens)
-		} else if curChar == ' ' || curChar == '\r' || curChar == '\t' {
-			return aux(s, curPos+1, curTokens)
-		} else if isAlpha(curChar) {
-			tokenizeIdent(&curPos, s, &curTokens)
-			return aux(s, curPos, curTokens)
-		} else if curChar == '\'' || curChar == '"' {
-			tokenizeString(&curPos, s, &curTokens)
-			return aux(s, curPos, curTokens) //skip over quote and most recently added char
-		} else if isNum(curChar) {
-			tokenizeNumber(&curPos, s, &curTokens)
-			return aux(s, curPos, curTokens)
-		} else if curChar == ';' {
-			for curPos < len(s) && s[curPos] != '\n' {
-				curPos++
+			tok := Token{ID: possibleId, Contents: string(curChar), Filename: t.filename, LineNumber: t.curLine}
+			if possibleId == TOK_NEWLINE {
+				t.curLine++
 			}
-			return aux(s, curPos, curTokens)
+
+			t.curTokens = append(t.curTokens, tok)
+			t.curPos++
+			return aux(t)
+		} else if curChar == ' ' || curChar == '\r' || curChar == '\t' {
+			t.curPos++
+			return aux(t)
+		} else if isAlpha(curChar) {
+			t.tokenizeIdent()
+			return aux(t)
+		} else if curChar == '\'' || curChar == '"' {
+			t.tokenizeString()
+			return aux(t) //skip over quote and most recently added char
+		} else if isNum(curChar) {
+			t.tokenizeNumber()
+			return aux(t)
+		} else if curChar == ';' {
+			for t.curPos < len(s) && s[t.curPos] != '\n' {
+				t.curPos++
+			}
+			return aux(t)
 		}
 
 		panic("Untokenizable character '" + string(curChar) + "'")
 	}
 
-	return aux(s, 0, []Token{})
+	return aux(tokenizer)
 }
 
 func isNum(c byte) bool {
@@ -59,22 +82,22 @@ func isIn(c byte, set []byte) bool {
 	return false
 }
 
-func tokenizeIdent(curPos *int, s string, curTokens *[]Token) {
-	curChar := s[*(curPos)]
+func (t *Tokenizer) tokenizeIdent() {
+	curChar := t.fileContents[t.curPos]
 
 	identString := string(curChar)
-	for *(curPos) < len(s)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
-		*(curPos) += 1
-		curChar = s[*(curPos)]
+	for t.curPos < len(t.fileContents)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
+		t.curPos += 1
+		curChar = t.fileContents[t.curPos]
 		identString += string(curChar)
 	}
 
 	var tok Token //Handle some weird off-by-one errors
-	if *(curPos) == len(s)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
-		tok = Token{ID: TOK_IDENT, Contents: identString}
-		*(curPos)++
+	if t.curPos == len(t.fileContents)-1 && (isAlpha(curChar) || isNum(curChar) || curChar == '_') {
+		tok = Token{ID: TOK_IDENT, Contents: identString, Filename: t.filename, LineNumber: t.curLine}
+		t.curPos++
 	} else {
-		tok = Token{ID: TOK_IDENT, Contents: identString[:len(identString)-1]}
+		tok = Token{ID: TOK_IDENT, Contents: identString[:len(identString)-1], Filename: t.filename, LineNumber: t.curLine}
 	}
 
 	possibleId, ok := keywordMap[tok.Contents]
@@ -82,44 +105,50 @@ func tokenizeIdent(curPos *int, s string, curTokens *[]Token) {
 		tok.ID = possibleId
 	}
 
-	*(curTokens) = append(*(curTokens), tok)
+	t.curTokens = append(t.curTokens, tok)
 }
 
-func tokenizeString(curPos *int, s string, curTokens *[]Token) {
+func (t *Tokenizer) tokenizeString() {
 	str := ""
-	curChar := s[*(curPos)] //capture what the opening quote was
+	curChar := t.fileContents[t.curPos] //capture what the opening quote was
 
-	for *(curPos) != len(s) && s[*(curPos)+1] != curChar {
-		*(curPos)++
-		str += string(s[*(curPos)])
+	for t.curPos != len(t.fileContents) && t.fileContents[t.curPos+1] != curChar {
+		t.curPos++
+		str += string(t.fileContents[t.curPos])
 	}
 
-	tok := Token{ID: TOK_STR, Contents: str}
-	*(curTokens) = append(*(curTokens), tok)
-	*(curPos) += 2
+	var tok Token
+	if curChar == '\'' && len(str) == 1 {
+		tok = Token{ID: TOK_CHAR, Contents: str, Filename: t.filename, LineNumber: t.curLine}
+	} else {
+		tok = Token{ID: TOK_STR, Contents: str, Filename: t.filename, LineNumber: t.curLine}
+	}
+
+	t.curTokens = append(t.curTokens, tok)
+	t.curPos += 2
 }
 
-func tokenizeNumber(curPos *int, s string, curTokens *[]Token) {
+func (t *Tokenizer) tokenizeNumber() {
 	acceptableChars := []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 	id := TOK_DEC_INT
-	if *(curPos) != len(s)-1 && s[*(curPos)+1] == 'x' {
+	if t.curPos != len(t.fileContents)-1 && t.fileContents[t.curPos+1] == 'x' {
 		acceptableChars = append(acceptableChars, []byte{'a', 'b', 'c', 'd', 'e', 'f'}...)
 		id = TOK_HEX_INT
-		*(curPos) += 2
-	} else if *(curPos) != len(s)-1 && s[*(curPos)+1] == 'b' {
+		t.curPos += 2
+	} else if t.curPos != len(t.fileContents)-1 && t.fileContents[t.curPos+1] == 'b' {
 		acceptableChars = []byte{'0', '1'}
 		id = TOK_BIN_INT
-		*(curPos) += 2
+		t.curPos += 2
 	}
 
 	out := ""
-	for *(curPos) != len(s) && isIn(s[*(curPos)], acceptableChars) {
-		out += string(s[*(curPos)])
-		*(curPos)++
+	for t.curPos != len(t.fileContents) && isIn(t.fileContents[t.curPos], acceptableChars) {
+		out += string(t.fileContents[t.curPos])
+		t.curPos++
 	}
 
-	tok := Token{ID: id, Contents: out}
-	*(curTokens) = append(*(curTokens), tok)
+	tok := Token{ID: id, Contents: out, Filename: t.filename, LineNumber: t.curLine}
+	t.curTokens = append(t.curTokens, tok)
 }
 
 var singleCharMap = map[byte]TokenID{

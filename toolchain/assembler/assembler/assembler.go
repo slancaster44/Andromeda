@@ -12,9 +12,10 @@ type Assembler struct {
 
 	outerDef string
 
-	pc     uint16
-	tokens []tokenizer.Token
-	curLoc int
+	pc         uint16
+	tokens     []tokenizer.Token
+	curLoc     int
+	passNumber int
 
 	Code [1024 * 64]uint16
 }
@@ -45,6 +46,11 @@ func (a *Assembler) PrintErrors() {
 }
 
 func (a *Assembler) AddError(err error) {
+	tok, tokErr := a.CurTok()
+	if tokErr == nil && err != nil {
+		err = fmt.Errorf("(%s:%d) -- %v", tok.Filename, tok.LineNumber, err)
+	}
+
 	if err != nil {
 		a.Errors = append(a.Errors, err)
 	}
@@ -87,4 +93,13 @@ func (a *Assembler) CheckCurToken(err error, ids ...tokenizer.TokenID) {
 func (a *Assembler) CheckAndConsumeToken(err error, ids ...tokenizer.TokenID) {
 	a.CheckCurToken(err, ids...)
 	a.ConsumeTok()
+}
+
+func (a *Assembler) AddLabel(identifier string, value uint16) {
+	_, ok := a.Labels[identifier]
+	if ok && a.passNumber == 1 {
+		a.AddErrorf("redefined label '%s'", identifier)
+	}
+
+	a.Labels[identifier] = value
 }

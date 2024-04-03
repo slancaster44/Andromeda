@@ -5,6 +5,8 @@ import (
 )
 
 func (a *Assembler) passOne() {
+	a.passNumber = 1
+
 	tok, err := a.CurTok()
 	for err == nil {
 		switch tok.ID {

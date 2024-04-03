@@ -2,8 +2,10 @@ package tokenizer
 
 type TokenID byte
 type Token struct {
-	ID       TokenID
-	Contents string
+	ID         TokenID
+	Contents   string
+	Filename   string
+	LineNumber int
 }
 
 func (t Token) IsInt() bool {
@@ -30,4 +32,5 @@ const (
 	TOK_DOLLAR
 	TOK_PLUS
 	TOK_MINUS
+	TOK_CHAR
 )

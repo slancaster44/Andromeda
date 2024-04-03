@@ -1,0 +1,76 @@
+        org             (0x0000)
+        include         ("./src/registers.aas")
+def entry:
+        jmp.off         cold_start
+        hlt
+
+        ;; Invalid Instruction Trap ;;
+        org             (0x0002)
+subdef inv_inst:
+        hlt
+
+def cold_start:
+        lda.imm         $                       ;Save the reset vector
+        sta.dir         reset                   ;
+                                                ; Fall through to bdos.init
+        ;; Basic Utility Routines ;;
+def bdos:
+subdef init:
+        lda.imm         bdos.console_out        ;Save cout vector
+        sta.dir         cout                    ;
+        lda.imm         bdos.console_in         ;Save cin vector
+        sta.dir         cin                     ;
+        jmp.off         stack.init
+
+        ;; Usage ;;
+        ;; Load the character to print into r0
+        ;; jsr.dir      cout
+        equ             (console, 0x0000)
+subdef console_out:
+        sta.inc         rp
+        lda.dir         r0
+        out.imm         console
+        jmp.dec         rp
+
+        ;; Usage ;;
+        ;; jsr.dir      cin
+        ;; Leaves a character read from the console in the accumulator
+subdef console_in:
+        sta.inc         rp
+        inp.imm         console
+        jmp.dec         rp
+
+        ;; Stack Initialization ;;
+def stack:
+subdef rp_base:
+        dw(0xFB00)
+subdef sp_base:
+        dw(0xF000)
+subdef init:
+        lda.rel         stack.rp_base           ; Set return stack pointer
+        sta.dir         rp                      ;
+        lda.rel         stack.sp_base           ; Set operations stack pointer
+        sta.dir         sp                      ;
+                                                ; Fall through
+def thread:
+subdef init:
+        lda.imm         thread.entry            ; Load thread pointer with initial threadd
+        sta.dir         tp                      ;
+        jmp.inc         tp                      ; Continue to initial thread
+subdef docol:                                   ; To use in word: 'jsr.imm thread.docol'
+        sta.dir         r0                      ; Save pointer to new thread
+        lda.dir         tp                      ; Load current thread pointer
+        sta.inc         rp                      ; Save it to return stack
+        lda.dir         r0                      ; Load new thread pointer
+        sta.dir         tp                      ; Store it into the thread pointer register
+        jmp.inc         tp                      ; Go to next routine in thread
+subdef exit:                                    ; To use in word: jsr.imm thread.exit'
+        lda.dec         rp                      ; Pull old thread pointer into accumulator
+        sta.dir         tp                      ; Put old thread pointer back into tp
+        jmp.inc         tp                      ; Continue old thread
+subdef entry:
+        dw              (setup)
+        dw              (forth_add.code)
+        dw              (exit)
+def dictionary:
+        include         ("./src/dictionary.aas")

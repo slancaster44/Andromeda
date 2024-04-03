@@ -13,7 +13,7 @@ func (a *Assembler) handleDef() {
 	a.AddError(err)
 
 	ident := tok.Contents
-	a.Labels[ident] = a.pc
+	a.AddLabel(ident, a.pc)
 	a.outerDef = ident
 
 	a.ConsumeTok()
@@ -28,7 +28,7 @@ func (a *Assembler) handleSubDef() {
 	a.AddError(err)
 
 	ident := a.outerDef + "." + tok.Contents
-	a.Labels[ident] = a.pc
+	a.AddLabel(ident, a.pc)
 
 	a.ConsumeTok()
 	a.CheckAndConsumeToken(errors.New("expected ':'"), tokenizer.TOK_COLON)

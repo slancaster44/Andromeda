@@ -56,7 +56,7 @@ func (a *Assembler) handleInstructionPassTwo() {
 		a.ConsumeTok()
 		number = int(a.getNumber())
 
-		if mode == instruction.AM_OFF {
+		if mode == instruction.AM_OFF || mode == instruction.AM_REL {
 			number -= int(a.pc)
 		}
 	}

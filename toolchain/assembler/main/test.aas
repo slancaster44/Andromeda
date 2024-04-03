@@ -3,13 +3,18 @@ def reset:
     jmp.off     reset.cold_start
 
     org(0x0002)
+    equ(my_const, -11)
 subdef inv_inst:                    ; Invalid Instruction Trap
     hlt                             ; For now, just a simple halt will do
 
 subdef cold_start:
     lda.imm     $                   ;Save the reset vector
     sta.dir     0x01
+    lda.imm     my_const
+    sta.dir     0x02
+    lda.imm     'c'
     hlt
 
-    dw(11)
+    include("test_inc.aas")
+    str("Hello, World!")
 subdef end:

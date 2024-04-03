@@ -3,6 +3,7 @@ package assembler
 import "andromeda/toolchain/assembler/tokenizer"
 
 func (a *Assembler) passTwo() {
+	a.passNumber = 2
 	a.curLoc = 0
 	a.pc = 0
 	a.outerDef = ""

@@ -22,33 +22,32 @@ func getInput() string {
 }
 
 func (v *VM) PrintStatus() {
-	fmt.Printf("Accumulator: 0x%04X\n", v.Accumulator)
+	fmt.Printf("Accumulator: %d (0x%04X)\n", v.Accumulator, uint16(v.Accumulator))
 	fmt.Printf("Program Counter: 0x%04X (%s)\n", v.PC, instruction.Instruction(v.Memory[v.PC]))
 	fmt.Printf("Halt Flip Flop: %t\n", v.HFF)
 }
 
-func getStartStopArgs(input string) (uint64, uint64) {
-	splitInput := strings.Split(input, " ")
-	if len(splitInput) != 3 {
-		fmt.Println("Expected two arguments, a start and stop address")
-		return 0, 0
-	}
-
-	startStr := strings.TrimSpace(splitInput[1])
-	start, err := strconv.ParseUint(startStr, 16, 16)
-	if err != nil {
-		fmt.Print(err)
-		return 0, 0
-	}
-
-	stopStr := strings.TrimSpace(splitInput[2])
-	stop, err := strconv.ParseUint(stopStr, 16, 16)
-	if err != nil {
-		fmt.Print(err)
-		return 0, 0
-	}
-
+func getStartStopArgs(input string) (int, int) {
+	start := getNumberAtIndex(input, 1)
+	stop := getNumberAtIndex(input, 2)
 	return start, stop
+}
+
+func getNumberAtIndex(input string, index int) int {
+	splitInput := strings.Split(input, " ")
+	if len(splitInput) <= index {
+		fmt.Println("Not enough arguments")
+		return -1
+	}
+
+	value := strings.TrimSpace(splitInput[index])
+	integer, err := strconv.ParseUint(value, 16, 16)
+	if err != nil {
+		fmt.Print(err)
+		return -1
+	}
+
+	return int(integer)
 }
 
 func (v *VM) PrintMemory(start, stop uint64) {
@@ -59,10 +58,10 @@ func (v *VM) PrintMemory(start, stop uint64) {
 
 	for i := start; i <= stop; i++ {
 		if i%16 == 0 {
-			fmt.Printf("\n0x%04X:\t", i)
+			fmt.Printf("\n0x%04X:\t", uint16(i))
 		}
 
-		fmt.Printf("0x%04X ", v.Memory[i])
+		fmt.Printf("0x%04X ", uint16(v.Memory[i]))
 	}
 	fmt.Printf("\n\n")
 }
@@ -76,7 +75,19 @@ func (v *VM) Debug() {
 			v.SingleStep()
 		} else if input[0] == 'm' {
 			start, stop := getStartStopArgs(input)
-			v.PrintMemory(start, stop)
+			v.PrintMemory(uint64(start), uint64(stop))
+		} else if input[0] == 'j' {
+			val := getNumberAtIndex(input, 1)
+			if val != -1 {
+				v.PC = uint16(val)
+			}
+		} else if input[0] == 'f' {
+			val := getNumberAtIndex(input, 1)
+			if val != -1 {
+				for i := 0; i < val; i++ {
+					v.SingleStep()
+				}
+			}
 		} else if input[0] == 'q' {
 			break
 		} else {

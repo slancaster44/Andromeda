@@ -17,10 +17,10 @@ func TestSingleChar(t *testing.T) {
 	}
 
 	for i, v := range testStrings {
-		result := Tokenize(v)
+		result := Tokenize(v, "testing.123")
 
 		for j, v2 := range expected[i] {
-			if result[j] != v2 {
+			if result[j].ID != v2.ID {
 				t.Fatalf("Expected '%v' got '%v'", v2, result[j])
 			}
 		}
@@ -35,7 +35,7 @@ func TestIdent(t *testing.T) {
 		{ID: TOK_RPAREN, Contents: ")"},
 	}
 
-	results := Tokenize(testString)
+	results := Tokenize(testString, "testing.123")
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
 			t.Fatalf("%v", v)
@@ -53,7 +53,7 @@ func TestKeyword(t *testing.T) {
 		{ID: TOK_RPAREN, Contents: ")"},
 	}
 
-	results := Tokenize(testString)
+	results := Tokenize(testString, "testing.123")
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
 			t.Fatalf("%v", v)
@@ -71,7 +71,7 @@ func TestString(t *testing.T) {
 		{ID: TOK_DOT, Contents: "."},
 	}
 
-	results := Tokenize(testString)
+	results := Tokenize(testString, "testing.123")
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
 			t.Logf("%v", v)
@@ -83,15 +83,15 @@ func TestString(t *testing.T) {
 func TestInt(t *testing.T) {
 	testString := "32 (0xf55) 0b10114"
 	expected := []Token{
-		{TOK_DEC_INT, "32"},
-		{TOK_LPAREN, "("},
-		{TOK_HEX_INT, "f55"},
-		{TOK_RPAREN, ")"},
-		{TOK_BIN_INT, "1011"},
-		{TOK_DEC_INT, "4"},
+		{TOK_DEC_INT, "32", "testing.123", 1},
+		{TOK_LPAREN, "(", "testing.123", 1},
+		{TOK_HEX_INT, "f55", "testing.123", 1},
+		{TOK_RPAREN, ")", "testing.123", 1},
+		{TOK_BIN_INT, "1011", "testing.123", 1},
+		{TOK_DEC_INT, "4", "testing.123", 1},
 	}
 
-	results := Tokenize(testString)
+	results := Tokenize(testString, "testing.123")
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
 			t.Fatalf("%v", v)
@@ -105,10 +105,10 @@ func TestInt(t *testing.T) {
 func TestComment(t *testing.T) {
 	testString := ";Some Comment\n"
 	expected := []Token{
-		{TOK_NEWLINE, "\n"},
+		{TOK_NEWLINE, "\n", "testing.123", 1},
 	}
 
-	results := Tokenize(testString)
+	results := Tokenize(testString, "testing.123")
 	if !tokListMatch(results, expected) {
 		for _, v := range results {
 			t.Fatalf("%v", v)
@@ -123,7 +123,7 @@ func tokListMatch(a, b []Token) bool {
 	}
 
 	for i, v := range a {
-		if v != b[i] {
+		if v.ID != b[i].ID || v.Contents != b[i].Contents {
 			return false
 		}
 	}

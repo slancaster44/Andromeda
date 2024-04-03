@@ -1,0 +1,65 @@
+
+def setup:
+        lda.imm         2
+        sta.inc         sp
+        sta.inc         sp
+        lda.imm         0       ;Clear for testing purposes
+        jmp.inc         tp
+
+def exit:
+        hlt
+
+def forth_dup:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("dup")
+subdef code:
+        lda.ind         sp      ; Load top of stack into accumulator
+        sta.inc         sp      ; Push it into the stack
+        jmp.inc         tp      ; Next
+
+def forth_drop:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("drop")
+subdef code:
+        lda.dec         sp      ; Pop top of stack
+        jmp.inc         tp      ; Next
+
+def forth_swap:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("swap")
+subdef code:
+        lda.dec         sp      ; Pop top of stack into r0
+        sta.dir         r0      ;
+        lda.dec         sp      ; Pop second of stack into r1
+        sta.dir         r1      ;
+        lda.dir         r0      ; Push top of stack back onto stack
+        sta.inc         sp      ;
+        lda.dir         r1      ; Push old second of stack onto stack
+        sta.inc         sp      ;
+        jmp.inc         tp      ; Next
+
+def forth_add:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("add")
+subdef code:
+        lda.dec         sp      ; Load first operand
+        add.dec         sp      ; Add second operand
+        sta.inc         sp      ; Save result to stack
+        jmp.inc         tp      ; Next
+
