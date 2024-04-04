@@ -70,7 +70,7 @@ subdef exit:                                    ; To use in word: jsr.imm thread
         jmp.inc         tp                      ; Continue old thread
 subdef entry:
         dw              (setup)
-        dw              (forth_add.code)
+        dw              (forth_inv.code)
         dw              (exit)
 def dictionary:
         include         ("./src/dictionary.aas")

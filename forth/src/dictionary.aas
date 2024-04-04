@@ -1,13 +1,48 @@
 
 def setup:
-        lda.imm         2
-        sta.inc         sp
+        lda.imm         12
         sta.inc         sp
         lda.imm         0       ;Clear for testing purposes
         jmp.inc         tp
 
+def setup2:
+        lda.imm         0x7F
+        sta.inc         sp
+        jmp.inc         tp
+
 def exit:
         hlt
+
+        equ(true,  0xFFFF)
+        equ(false, 0x0000)
+
+def forth_store:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("!")
+subdef code:                    ; Tested
+        lda.dec         sp      ; Load the address
+        sta.dir         r0      ; Put the address in r0
+        lda.dec         sp      ; Load the value
+        sta.ind         r0      ; Store the value
+        jmp.inc         tp      ; Next
+
+def forth_fetch:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("@")
+subdef code:                    ; Tested
+        lda.dec         sp      ; Load the address
+        sta.dir         r0      ; Put the address in r0
+        lda.ind         r0      ; Load the value at that address
+        sta.inc         rp      ; Put the dereferenced value in the accumulator
+        jmp.inc         tp      ; Next
 
 def forth_dup:
 subdef link:
@@ -54,12 +89,167 @@ def forth_add:
 subdef link:
         dw(0x0000)
 subdef name_length:
-        dw(3)
+        dw(1)
 subdef name:
-        str("add")
-subdef code:
+        str("+")
+subdef code:                    ; Tested
         lda.dec         sp      ; Load first operand
         add.dec         sp      ; Add second operand
         sta.inc         sp      ; Save result to stack
         jmp.inc         tp      ; Next
+
+def forth_twostar:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(2)
+subdef name:
+        str("2*")
+subdef code:
+        lda.dec         sp      ; Load top of stack
+        add.ind         sp      ; Add top of stack to itself
+        sta.inc         sp      ; Save result to stack
+        jmp.inc         tp      ; Next
+
+def forth_and:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("&")
+subdef code:                    ; Tested
+        lda.dec         sp      ; Load first operand
+        nnd.dec         sp      ; Nand second operand
+        sta.dir         r0      ; Invert result
+        nnd.dir         r0      ;
+        sta.inc         sp      ; Save result to stack
+        jmp.inc         tp      ; Next
+
+def forth_inv:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(6)
+subdef name:
+        str("invert")
+subdef code:                    ; Tested
+        lda.dec         sp      ; Load argument
+        nnd.ind         sp      ; Invert argument
+        sta.inc         sp      ; Save result
+        jmp.inc         tp      ; Next
+
+def forth_xor
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("xor")
+subdef code:
+        lda.dec         sp      ; Load argument
+        xor.dec         sp      ; Xor argument
+        sta.inc         sp      ; Save result
+        jmp.inc         tp      ; Next
+
+def forth_true:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("true")
+subdef code:
+        lda.imm         true    ; Load flag
+        sta.inc         sp      ; Save result to stack
+        jmp.inc         tp      ; Next
+
+def forth_true:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(5)
+subdef name:
+        str("false")
+subdef code:
+        lda.imm         false   ; Load flag
+        sta.inc         sp      ; Save result to stack
+        jmp.inc         tp      ; Next
+
+def forth_eq:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("=")
+subdef code:
+        lda.dec         sp              ; Load first operand
+        sub.dec         sp              ; Subtract second argument
+        jnz.off         forth_eq.nz     ; Jump to non-zero case
+        lda.imm         true            ; Load 'true' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+subdef nz:
+        lda.imm         false           ; Load the 'false' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+
+def forth_gt:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(1)
+subdef name:
+        str(">")
+subdef code:
+        lda.dec         sp              ; Load first argument
+        sub.dec         sp              ; Subtract second argument
+        jns.off         forth_gt.ns     ; Jump if result is <= 0
+        jnz.off         forth_gt.ns     ;
+        lda.imm         true            ; Load flag
+        sta.inc         sp              ; Save the result
+        jmp.inc         tp              ; Next
+subdef ns:
+        lda.imm         false           ; Load flag
+        sta.inc         sp              ; Save the result
+        jmp.inc         tp              ; Next
+
+
+def forth_zeq:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(2)
+subdef name:
+        str("0=")
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load top of stack
+        jnz.off         forth_zeq.nz    ; Jump to non-zero case
+        lda.imm         true            ; Load 'true' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+subdef nz:
+        lda.imm         false           ; Load 'false' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+
+def forth_ltz:
+subdef link:
+        dw(0x0000)
+subdef name_length:
+        dw(2)
+subdef name:
+        str("0<")
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load top of stack
+        jns.off         forth_ltz.ns    ; Jump to zero or greater case
+        lda.imm         true            ; Load 'true' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+subdef ns:
+        lda.imm         false           ; Load 'false' flag
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+
 

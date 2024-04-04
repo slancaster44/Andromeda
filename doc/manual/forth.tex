@@ -3,6 +3,109 @@ The Andromeda comes with a minimal forth environment in ROM.
 This serves as a primative operating system and programming environment.
 
 \subsection{Words}\label{subsec:implemented-words}
-The forth environment implements a subset of ANS Forth, these words are listed
-and described below.
-\subsubsection{Store}
+The forth environment implements a small subset of ANS Forth, as well as the optional `block' word set.
+These words are outlined below.
+For more information on how to program in Forth, consult outside sources on the subject.
+\begin{center}
+    \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+    \begin{longtable}{|P{0.08\linewidth}|P{0.07\linewidth}|P{0.13\linewidth}|P{0.17\linewidth}|P{0.45\linewidth}|}
+            \hline
+            Section & Symbol & Name & Stack Effects & Description \\
+            \hline
+            6.1.0010 & \texttt{!} & ``store" & \texttt{(x a-addr -- )} & Store the value `x' at the address `a-addr.' \\
+            \hline
+            6.1.0150 & \texttt{,} & ``comma" & \texttt{(x -- )} & Reserve one cell of data space and store `x' in the cell. \\
+            \hline
+            6.1.650 & \texttt{@} & ``fetch" & \texttt{(a-addr -- x)} & x is the value stored in `a-addr.' \\
+            \hline
+            6.1.0120 & \texttt{+} & ``plus" & \texttt{(n1 n2 -- n3)} & Add \texttt{n1} and \texttt{n2}, giving \texttt{n3} as the sum \\
+            \hline
+            6.1.0090 & \texttt{*} & ``star" & \texttt{(n1 n2 -- n3)} & Multiply \texttt{n1} and \texttt{n2}, giving \texttt{n3} as the product \\
+            \hline
+            6.1.0320 & \texttt{2*} & ``two-star" & \texttt{(n1 -- n2)} & Shift \texttt{n1} left, filling the vacated bit with a zero \\
+            \hline
+            6.1.0160 & \texttt{-} & ``minus" & \texttt{(n1 n2 -- n3)} & Subtract \texttt{n1} and \texttt{n2}, giving \texttt{n3} as the difference\\
+            \hline
+            6.1.0240 & \texttt{/mod} & ``slash-mod" & \texttt{(n1 n2 -- n3 n4)} & Divide \texttt{n1} by \texttt{n2}, giving remainder as \texttt{n3},and the quotient as \texttt{n4}\\
+            \hline
+            6.1.0230 & \texttt{/} & ``slash" & \texttt{(n1 n2 -- n3)} & Divide \texttt{n1} by \texttt{n2}, giving \texttt{n3} as the quotient\\
+            \hline
+            6.1.0330 & \texttt{2/} & ``two-slash" & \texttt{(x1 -- x2)} & \texttt{x2} is the result of shifting \texttt{x1} one bit right, leaving the most significant bit unchanged \\
+            \hline
+            6.1.1890 & \texttt{mod} & ``mod" & \texttt{(n1 n2 -- n3)} & Divide \texttt{n1} by \texttt{n2}, giving the remainder \texttt{n3} \\
+            \hline
+            6.1.0270 & \texttt{0=} & ``zero-equals" & \texttt{(x -- flag)} & Flag is true if and only if x is equal to zero \\
+            \hline
+            6.1.00250 & \texttt{0<} & ``zero-less" & \texttt{(n -- flag)} & Flag is true if and only if x is less than zero \\
+            \hline
+            6.1.0720 & \texttt{\&} & ``and" & \texttt{(x1 x2 -- x3)} & \texttt{x3} is the bitwise logical ``and" of \texttt{x1} and \texttt{x2} \\
+            \hline
+            6.1.1720 & \texttt{invert} & ``invert" & \texttt{(x1 -- x2)} & \texttt{x2} is the bitwise logical inverse of \texttt{x1} \\
+            \hline
+            6.2.2298 & \texttt{true} & ``true" & \texttt{( -- true)} & Return a `true' flag, a single-celled value with all bits set \\
+            \hline
+            6.2.1485 & \texttt{false} & ``false" & \texttt{( -- false)} & Return a `false' flag, a single-celled value with all bits unset \\
+            \hline
+            6.1.0530 & \texttt{=} & ``equals" & \texttt{(x1 x2 -- flag)} & Flag is true if and only if \texttt{x1} is bit-for-bit the same as \texttt{x2} \\
+            \hline
+            6.1.0540 & \texttt{>} & ``greater-than" & \texttt{(n1 n2 -- flag)} & Flag is true if and only if \texttt{n1} is greater than \texttt{n2} \\
+            \hline
+            6.1.2490 & \texttt{xor} & ``x-or" & \texttt{(x1 x2 -- x3)} & \texttt{x3} is the bitwise exclusive-or of \texttt{x1} with \texttt{x2} \\
+            \hline
+            6.1.1290 & \texttt{dup} & ``dupe" & \texttt{(x -- x x)} & Duplicate \texttt{x}\\
+            \hline
+            6.1.2260 & \texttt{swap} & ``swap" & \texttt{(x1 x2 -- x2 x1)} & Exchange the top two stack items \\
+            \hline
+            6.1.1290 & \texttt{drop} & ``drop" & \texttt{(x -- )} & Remove \texttt{x} from the stack \\
+            \hline
+            6.1.1990 & \texttt{over} & ``over" & \texttt{(x1 x2 -- x1 x2 x1)} & Place a copy of \texttt{x1} on top of the stack \\
+            \hline
+            6.1.2160 & \texttt{rot} & ``rote" & \texttt{(x1 x2 x3 -- x2 x3 x1)} & Rotate the top three stack entries \\
+            \hline
+            6.1.0580 & \texttt{>R} & ``to-r" & \texttt{(x -- ) R:( -- x)} & Move \texttt{x} to the return stack \\
+            \hline
+            6.1.2070 & \texttt{R@} & ``r-fetch" & \texttt{( -- x) R:(x -- x)} & Copy \texttt{x} from the return stack to the data stack \\
+            \hline
+            6.1.2060 & \texttt{R>} & ``r-from" & \texttt{( -- x) R:(x -- )} &  Move \texttt{x} from the return stack to the data stack \\
+            \hline
+            6.1.1700 & \texttt{if} & ``if" & \texttt{(x -- )} & If all bits of \texttt{x} are zero, skip forward to the next ``then" or ``else" token \\
+            \hline
+            6.1.2270 & \texttt{then} & ``then" & \texttt{( -- )} & Continue execution \\
+            \hline
+            6.1.1310 & \texttt{else} & ``else" & \texttt{( -- )} & Jump target point when ``if" evaluates false \\
+            \hline
+            6.1.2430 & \texttt{while} & ``while" & \texttt{(flag -- )} & If flag is true, continue. If flag is false, terminate the loop (after \texttt{REPEAT}) \\
+            \hline
+        \end{longtable}
+\end{center}
+
+
+\subsubsection{Repeat}
+\subsubsection{Do}
+\subsubsection{I}
+\subsubsection{Tick}
+\subsubsection{Begin}
+\subsubsection{Again}
+\subsubsection{Until}
+\subsubsection{Loop}
+\subsubsection{J}
+\subsubsection{Execute}
+\subsubsection{Colon}
+\subsubsection{Constant}
+\subsubsection{Create}
+\subsubsection{Semicolon}
+\subsubsection{Variable}
+\subsubsection{Does}
+\subsubsection{Key}
+\subsubsection{Emit}
+\subsubsection{Key Question}
+\subsubsection{Carriage Return}
+\subsubsection{Paren}
+\subsubsection{Dot S}
+\subsubsection{Backslash}
+\subsubsection{Block}
+\subsubsection{Buffer}
+\subsubsection{Load}
+\subsubsection{List}
+\subsubsection{Through}
+
