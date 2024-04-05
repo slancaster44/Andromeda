@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1404cf34-0f97-464e-b7a0-07940acd956f" name="Changes" comment="Work on forth" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///usr/lib/go-1.18" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/toolchain/vm/vm.go" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2ds4ug4uIVuEe63YYfaS6ywQzhI" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go Build.go build andromeda/toolchain/assembler/main.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Build.go build andromeda/toolchain/vm/main.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.TestArithmetic in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestDollar in andromeda/toolchain/assembler/assemble.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestFullExample in andromeda/toolchain/assembler/assemble.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestInt in andromeda/toolchain/assembler/tokenizer.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.TestInvalidInstructionTrap in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestJMP in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestJNZ in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestJSR in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestLD in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestLabels in andromeda/toolchain/assembler/assemble.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestNewInstruction in andromeda/toolchain/instruction.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestOrigin in andromeda/toolchain/assembler/assemble.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestPrintInstructionOpcodes in andromeda/toolchain/instruction.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestPrintInstructions in andromeda/toolchain/instruction.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestRelativeAddressing in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestStore in andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.TestString in andromeda/toolchain/assembler/tokenizer.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.go test andromeda/toolchain/assembler/assemble.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.go test andromeda/toolchain/assembler/tokenizer.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.go test andromeda/toolchain/vm.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.go test toolchain.executor&quot;: &quot;Run&quot;,
+    &quot;Go Test.vm_test.go.executor&quot;: &quot;Run&quot;,
+    &quot;LaTeX.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/slancaster/go/src/andromeda/doc/external&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/doc/external" />
+      <recent name="$PROJECT_DIR$/doc/manual/img" />
+      <recent name="$PROJECT_DIR$/doc/manual" />
+      <recent name="$PROJECT_DIR$/doc/programmers_manual" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/forth/src" />
+      <recent name="$PROJECT_DIR$/doc/manual/img" />
+    </key>
+  </component>
+  <component name="RunManager" selected="LaTeX.main">
+    <configuration name="go build andromeda/toolchain/assembler/main" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="andromeda" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="$PROJECT_DIR$/toolchain/assembler/main/test.aas 0 128" />
+      <kind value="PACKAGE" />
+      <package value="andromeda/toolchain/assembler/main" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/toolchain/assembler/main/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestInvalidInstructionTrap in andromeda/toolchain/vm" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="andromeda" />
+      <working_directory value="$PROJECT_DIR$/toolchain/vm" />
+      <kind value="PACKAGE" />
+      <package value="andromeda/toolchain/vm" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestInvalidInstructionTrap\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test andromeda/toolchain/assembler/tokenizer" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="andromeda" />
+      <working_directory value="$PROJECT_DIR$/toolchain/assembler/tokenizer" />
+      <kind value="PACKAGE" />
+      <package value="andromeda/toolchain/assembler/tokenizer" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="vm_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="andromeda" />
+      <working_directory value="$PROJECT_DIR$/toolchain/vm" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/toolchain/vm/vm_test.go" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="LATEX_RUN_CONFIGURATION" factoryName="LaTeX configuration factory" temporary="true">
+      <texify>
+        <compiler>PDFLATEX</compiler>
+        <compiler-path />
+        <sumatra-path />
+        <pdf-viewer>BUILT-IN-PDF-VIEWER</pdf-viewer>
+        <viewer-command />
+        <compiler-arguments />
+        <envs />
+        <main-file>$PROJECT_DIR$/doc/manual/main.tex</main-file>
+        <output-path>$PROJECT_DIR$/out</output-path>
+        <auxil-path>{projectDir}/auxil</auxil-path>
+        <compile-twice>false</compile-twice>
+        <output-format>PDF</output-format>
+        <latex-distribution>TEXLIVE</latex-distribution>
+        <has-been-run>true</has-been-run>
+        <bib-run-config>[]</bib-run-config>
+        <makeindex-run-config>[]</makeindex-run-config>
+      </texify>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build andromeda/toolchain/assembler/main" />
+      <item itemvalue="Go Test.go test andromeda/toolchain/assembler/tokenizer" />
+      <item itemvalue="Go Test.TestInvalidInstructionTrap in andromeda/toolchain/vm" />
+      <item itemvalue="Go Test.vm_test.go" />
+      <item itemvalue="LaTeX.main" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="LaTeX.main" />
+        <item itemvalue="Go Test.go test andromeda/toolchain/assembler/tokenizer" />
+        <item itemvalue="Go Build.go build andromeda/toolchain/assembler/main" />
+        <item itemvalue="Go Test.TestInvalidInstructionTrap in andromeda/toolchain/vm" />
+        <item itemvalue="Go Test.vm_test.go" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-2946fb9b3188-155fe4b6e3a0-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.15026.17" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="There might be a debugger now" />
+    <MESSAGE value="Started work on instruction set documentation" />
+    <MESSAGE value="Added relative addressing mode. I really need to think about freezing the feature set" />
+    <MESSAGE value="Final Changes Made. Now we will have a feature set freeze unless something super important comes up" />
+    <MESSAGE value="Reference Card for Addressing Modes" />
+    <MESSAGE value="Encoding Documentation" />
+    <MESSAGE value="This assembler isn't working, we will probably have to rewrite it" />
+    <MESSAGE value="Reworked Assembler" />
+    <MESSAGE value="Stuff Happened" />
+    <MESSAGE value="Work on forth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on forth" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/toolchain/assembler/object/object.go</url>
+          <line>46</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/toolchain/assembler/assemble/directives.go</url>
+          <line>95</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/toolchain/vm/vm_test.go</url>
+          <line>43</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/toolchain/vm/vm_test.go</url>
+          <line>47</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GoTestRunConfiguration">
+        <watch expression="i.Opcode()" language="go" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
