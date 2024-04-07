@@ -112,7 +112,8 @@ subdef docol:                                   ; To use in word: 'jsr.imm threa
         jmp.inc         tp                      ; Go to next routine in thread
 subdef entry:
         dw              (setup)
-        dw              (forth_twoslash.code)
+        dw              (forth_base.code)
+        dw              (forth_fetch.code)
         dw              (exit)
 def dictionary:
         include         ("./src/dictionary.aas")

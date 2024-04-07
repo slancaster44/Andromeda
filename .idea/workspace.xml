@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1404cf34-0f97-464e-b7a0-07940acd956f" name="Changes" comment="Forth division and multiplication">
+    <list default="true" id="1404cf34-0f97-464e-b7a0-07940acd956f" name="Changes" comment="Filled out minor details in division routines">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/manual/forth.tex" beforeDir="false" afterPath="$PROJECT_DIR$/doc/manual/forth.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/bin/forth.bin" beforeDir="false" afterPath="$PROJECT_DIR$/forth/bin/forth.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/src/dictionary.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/dictionary.aas" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/src/main.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/main.aas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/vm/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/vm/main/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forth/src/registers.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/registers.aas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcb_layouts/Accumulator/01_GRBR_Accumulator.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcb_layouts/Accumulator/Accumulator.kicad_pcb" beforeDir="false" afterPath="$PROJECT_DIR$/pcb_layouts/Accumulator/Accumulator.kicad_pcb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcb_layouts/Accumulator/Accumulator.kicad_prl" beforeDir="false" afterPath="$PROJECT_DIR$/pcb_layouts/Accumulator/Accumulator.kicad_prl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pcb_layouts/Backplan2/01_GRBR_Backplane.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +210,8 @@
     <MESSAGE value="Work on forth" />
     <MESSAGE value="Some missing kicad files" />
     <MESSAGE value="Forth division and multiplication" />
-    <option name="LAST_COMMIT_MESSAGE" value="Forth division and multiplication" />
+    <MESSAGE value="Filled out minor details in division routines" />
+    <option name="LAST_COMMIT_MESSAGE" value="Filled out minor details in division routines" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

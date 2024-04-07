@@ -1,13 +1,6 @@
 
 def setup:
-        lda.imm         9
-        sta.inc         sp
         lda.imm         0               ;Clear for testing purposes
-        jmp.inc         tp
-
-def setup2:
-        lda.imm         0x7F
-        sta.inc         sp
         jmp.inc         tp
 
 def exit:
@@ -417,9 +410,9 @@ subdef name_length:
 subdef name:
         str("exit")
 subdef code:
-        lda.dec         rp                      ; Pull old thread pointer into accumulator
-        sta.dir         tp                      ; Put old thread pointer back into tp
-        jmp.inc         tp                      ; Continue old thread
+        lda.dec         rp              ; Pull old thread pointer into accumulator
+        sta.dir         tp              ; Put old thread pointer back into tp
+        jmp.inc         tp              ; Continue old thread
 
 def forth_key:
 subdef link:
@@ -459,7 +452,7 @@ subdef code:
         jmp.inc         tp              ; Continue
 
 
-def forth_emit:
+def forth_cr:
 subdef link:
         dw(^)
 subdef name_length:
@@ -467,6 +460,33 @@ subdef name_length:
 subdef name:
         str("cr")
 subdef code:
-        lda.imm         '\n'
-        sta.inc         sp
-        jmp.inc         tp
+        lda.imm         0x0A            ; Get a newline character
+        sta.dir         r0              ; Load it into r0
+        jsr.dir         cout            ; Call cout routine
+        jmp.inc         tp              ; Continue
+
+def forth_lit:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("lit")
+subdef code:
+        lda.inc         tp              ; Load value from thread
+        sta.inc         sp              ; Put it on the stack
+        jmp.inc         tp              ; Continue
+
+def forth_base:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("base")
+subdef code:
+        lda.off         forth_base.data ; Load address
+        sta.inc         sp              ; Save to stack
+        jmp.inc         tp              ; Next
+subdef data:
+        dw(0x000A)                      ; Base 10 by default
