@@ -1,8 +1,10 @@
 
 def setup:
-        lda.imm         12
+        lda.imm         9
         sta.inc         sp
-        lda.imm         0       ;Clear for testing purposes
+        lda.imm         4
+        sta.inc         sp
+        lda.imm         0               ;Clear for testing purposes
         jmp.inc         tp
 
 def setup2:
@@ -11,6 +13,8 @@ def setup2:
         jmp.inc         tp
 
 def exit:
+        lda.imm         0
+        lda.dec         sp
         hlt
 
         equ(true,  0xFFFF)
@@ -23,162 +27,274 @@ subdef name_length:
         dw(1)
 subdef name:
         str("!")
-subdef code:                    ; Tested
-        lda.dec         sp      ; Load the address
-        sta.dir         r0      ; Put the address in r0
-        lda.dec         sp      ; Load the value
-        sta.ind         r0      ; Store the value
-        jmp.inc         tp      ; Next
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load the address
+        sta.dir         r0              ; Put the address in r0
+        lda.dec         sp              ; Load the value
+        sta.ind         r0              ; Store the value
+        jmp.inc         tp              ; Next
 
 def forth_fetch:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(1)
 subdef name:
         str("@")
-subdef code:                    ; Tested
-        lda.dec         sp      ; Load the address
-        sta.dir         r0      ; Put the address in r0
-        lda.ind         r0      ; Load the value at that address
-        sta.inc         rp      ; Put the dereferenced value in the accumulator
-        jmp.inc         tp      ; Next
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load the address
+        sta.dir         r0              ; Put the address in r0
+        lda.ind         r0              ; Load the value at that address
+        sta.inc         rp              ; Put the dereferenced value in the accumulator
+        jmp.inc         tp              ; Next
 
 def forth_dup:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(3)
 subdef name:
         str("dup")
 subdef code:
-        lda.ind         sp      ; Load top of stack into accumulator
-        sta.inc         sp      ; Push it into the stack
-        jmp.inc         tp      ; Next
+        lda.dec         sp              ; Load top of stack into accumulator
+        sta.inc         sp              ; Push it into the stack
+        sta.inc         sp              ; Twice
+        jmp.inc         tp              ; Next
 
 def forth_drop:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(4)
 subdef name:
         str("drop")
 subdef code:
-        lda.dec         sp      ; Pop top of stack
-        jmp.inc         tp      ; Next
+        lda.dec         sp              ; Pop top of stack
+        jmp.inc         tp              ; Next
 
 def forth_swap:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(4)
 subdef name:
         str("swap")
 subdef code:
-        lda.dec         sp      ; Pop top of stack into r0
-        sta.dir         r0      ;
-        lda.dec         sp      ; Pop second of stack into r1
-        sta.dir         r1      ;
-        lda.dir         r0      ; Push top of stack back onto stack
-        sta.inc         sp      ;
-        lda.dir         r1      ; Push old second of stack onto stack
-        sta.inc         sp      ;
-        jmp.inc         tp      ; Next
+        lda.dec         sp              ; Pop top of stack into r0
+        sta.dir         r0              ;
+        lda.dec         sp              ; Pop second of stack into r1
+        sta.dir         r1              ;
+        lda.dir         r0              ; Push top of stack back onto stack
+        sta.inc         sp              ;
+        lda.dir         r1              ; Push old second of stack onto stack
+        sta.inc         sp              ;
+        jmp.inc         tp              ; Next
+
+def forth_over:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("over")
+subdef code:                            ; Tested
+        lda.dir         sp              ; Get stack pointer
+        sub.imm         2               ; Get pointer to x1
+        sta.dir         r0              ; Save pointer
+        lda.ind         r0              ; Get x1
+        sta.inc         sp              ; Push x1 to stack
+        jmp.inc         tp              ; Next
+
+def forth_rot:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("rot")
+subdef code:
+        lda.dec         sp              ; Load stack items
+        sta.dir         r0
+        lda.dec         sp
+        sta.dir         r1
+        lda.dec         sp
+        sta.dir         r2
+        lda.dir         r1              ; Save items in correct order
+        sta.inc         sp
+        lda.dir         r0
+        sta.inc         sp
+        lda.dir         r2
+        sta.inc         sp
+        jmp.inc         tp              ; Next
+
+def forth_toR:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(2)
+subdef name:
+        str(">R")
+subdef code:
+        lda.dec         sp              ; Load stack top
+        sta.inc         rp              ; Push to return stack
+        jmp.inc         tp              ; Next
+
+def forth_Rfrom:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(2)
+subdef name:
+        str("R>")
+subdef code:
+        lda.dec         rp              ; Load return stack top
+        sta.inc         sp              ; Push to stack
+        jmp.inc         tp              ; Next
+
+def forth_Rfetch:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(2)
+subdef name:
+        str("R@")
+subdef code:
+        lda.dec         rp              ; Get return tack top
+        sta.inc         rp              ; Put it back on return stack
+        sta.inc         sp              ; Put it on data stack
+        jmp.inc         tp              ; Next
+
 
 def forth_add:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(1)
 subdef name:
         str("+")
-subdef code:                    ; Tested
-        lda.dec         sp      ; Load first operand
-        add.dec         sp      ; Add second operand
-        sta.inc         sp      ; Save result to stack
-        jmp.inc         tp      ; Next
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load first operand
+        add.dec         sp              ; Add second operand
+        sta.inc         sp              ; Save result to stack
+        jmp.inc         tp              ; Next
+
+def forth_mul:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("*")
+subdef code:
+        lda.dec         sp              ; Get one argument
+        sta.dir         r0              ;
+        lda.dec         sp              ; Get other argument
+        sta.dir         r1              ;
+        jsr.dir         mul             ; Call multiply routine
+        lda.dir         r3              ; Get result
+        sta.inc         sp              ; Put it on the stack
+        jmp.inc         tp              ; Next
 
 def forth_twostar:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(2)
 subdef name:
         str("2*")
 subdef code:
-        lda.dec         sp      ; Load top of stack
-        add.ind         sp      ; Add top of stack to itself
-        sta.inc         sp      ; Save result to stack
-        jmp.inc         tp      ; Next
+        lda.dec         sp              ; Load top of stack
+        add.ind         sp              ; Add top of stack to itself
+        sta.inc         sp              ; Save result to stack
+        jmp.inc         tp              ; Next
+
+def forth_divmod:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("/mod")
+subdef code:
+        lda.dec         sp              ; Get the operands into the correct registers
+        sta.dir         r1              ;
+        lda.dec         sp              ;
+        sta.dir         r0              ;
+        jsr.dir         divmod          ; Call the divmod subroutine
+        lda.dir         r2              ; Get the results onto the stack
+        sta.inc         sp              ;
+        lda.dir         r3              ;
+        sta.inc         sp              ;
+        jmp.inc         tp              ; Next
 
 def forth_and:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(1)
 subdef name:
         str("&")
-subdef code:                    ; Tested
-        lda.dec         sp      ; Load first operand
-        nnd.dec         sp      ; Nand second operand
-        sta.dir         r0      ; Invert result
-        nnd.dir         r0      ;
-        sta.inc         sp      ; Save result to stack
-        jmp.inc         tp      ; Next
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load first operand
+        nnd.dec         sp              ; Nand second operand
+        sta.dir         r0              ; Invert result
+        nnd.dir         r0              ;
+        sta.inc         sp              ; Save result to stack
+        jmp.inc         tp              ; Next
 
 def forth_inv:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(6)
 subdef name:
         str("invert")
-subdef code:                    ; Tested
-        lda.dec         sp      ; Load argument
-        nnd.ind         sp      ; Invert argument
-        sta.inc         sp      ; Save result
-        jmp.inc         tp      ; Next
+subdef code:                            ; Tested
+        lda.dec         sp              ; Load argument
+        nnd.ind         sp              ; Invert argument
+        sta.inc         sp              ; Save result
+        jmp.inc         tp              ; Next
 
-def forth_xor
+def forth_xor:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(3)
 subdef name:
         str("xor")
 subdef code:
-        lda.dec         sp      ; Load argument
-        xor.dec         sp      ; Xor argument
-        sta.inc         sp      ; Save result
-        jmp.inc         tp      ; Next
+        lda.dec         sp              ; Load argument
+        xor.dec         sp              ; Xor argument
+        sta.inc         sp              ; Save result
+        jmp.inc         tp              ; Next
 
 def forth_true:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(4)
 subdef name:
         str("true")
 subdef code:
-        lda.imm         true    ; Load flag
-        sta.inc         sp      ; Save result to stack
-        jmp.inc         tp      ; Next
+        lda.imm         true            ; Load flag
+        sta.inc         sp              ; Save result to stack
+        jmp.inc         tp              ; Next
 
-def forth_true:
+def forth_false:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(5)
 subdef name:
         str("false")
 subdef code:
-        lda.imm         false   ; Load flag
-        sta.inc         sp      ; Save result to stack
-        jmp.inc         tp      ; Next
+        lda.imm         false           ; Load flag
+        sta.inc         sp              ; Save result to stack
+        jmp.inc         tp              ; Next
 
 def forth_eq:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(1)
 subdef name:
@@ -197,7 +313,7 @@ subdef nz:
 
 def forth_gt:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(1)
 subdef name:
@@ -218,7 +334,7 @@ subdef ns:
 
 def forth_zeq:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(2)
 subdef name:
@@ -236,7 +352,7 @@ subdef nz:
 
 def forth_ltz:
 subdef link:
-        dw(0x0000)
+        dw(^)
 subdef name_length:
         dw(2)
 subdef name:
@@ -252,4 +368,51 @@ subdef ns:
         sta.inc         sp              ; Save to stack
         jmp.inc         tp              ; Next
 
+def forth_exit:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("exit")
+subdef code:
+        lda.dec         rp                      ; Pull old thread pointer into accumulator
+        sta.dir         tp                      ; Put old thread pointer back into tp
+        jmp.inc         tp                      ; Continue old thread
 
+def forth_key:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("key")
+subdef code:                            ; Tested
+        jsr.dir         cin             ; Read character to accumulator
+        sta.inc         sp              ; Write to stack
+        jmp.inc         tp              ; Next
+
+def forth_keyq:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("key?")
+subdef code:
+        lda.imm         true            ; Hardwire to 'true' for now
+        sta.inc         sp              ; Push flag to stack
+        jmp.inc         tp              ; Next
+
+def forth_emit:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("emit")
+subdef code:
+        lda.dec         sp              ; Get character from stack
+        sta.dir         r0              ; Load it into register for routine
+        jsr.dir         cout            ; Put character on screen
+        jmp.inc         tp              ; Continue

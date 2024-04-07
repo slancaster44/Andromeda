@@ -8,7 +8,7 @@ These words are outlined below.
 For more information on how to program in Forth, consult outside sources on the subject.
 \begin{center}
     \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
-    \begin{longtable}{|P{0.08\linewidth}|P{0.07\linewidth}|P{0.13\linewidth}|P{0.17\linewidth}|P{0.45\linewidth}|}
+    \begin{longtable}{|P{0.13\linewidth}|P{0.07\linewidth}|P{0.12\linewidth}|P{0.17\linewidth}|P{0.45\linewidth}|}
             \hline
             Section & Symbol & Name & Stack Effects & Description \\
             \hline
@@ -36,7 +36,7 @@ For more information on how to program in Forth, consult outside sources on the 
             \hline
             6.1.0270 & \texttt{0=} & ``zero-equals" & \texttt{(x -- flag)} & Flag is true if and only if x is equal to zero \\
             \hline
-            6.1.00250 & \texttt{0<} & ``zero-less" & \texttt{(n -- flag)} & Flag is true if and only if x is less than zero \\
+            6.1.0250 & \texttt{0<} & ``zero-less" & \texttt{(n -- flag)} & Flag is true if and only if x is less than zero \\
             \hline
             6.1.0720 & \texttt{\&} & ``and" & \texttt{(x1 x2 -- x3)} & \texttt{x3} is the bitwise logical ``and" of \texttt{x1} and \texttt{x2} \\
             \hline
@@ -68,6 +68,16 @@ For more information on how to program in Forth, consult outside sources on the 
             \hline
             6.1.2060 & \texttt{R>} & ``r-from" & \texttt{( -- x) R:(x -- )} &  Move \texttt{x} from the return stack to the data stack \\
             \hline
+            6.1.1750 & \texttt{key} & ``key" & \texttt{( -- char)} & Read an input character, place it on the stack \\
+            \hline
+            6.1.1320 & \texttt{emit} & ``emit" & \texttt{(x -- )} & Write a character to the display \\
+            \hline
+            10.6.1.1755 & \texttt{key?} & ``key-question" & \texttt{( -- flag)} & Flat is \texttt{true} if and only if a character is ready to be read \\
+            \hline
+            6.1.0990 & \texttt{cr} & ``c-r" & \texttt{( -- )} & Write a carraige return to the display \\
+            \hline
+            15.6.1.0220 & \texttt{.s} & ``dot-s" & \texttt{( -- )} & Copy and display the values currently on the data stack \\
+            \hline
             6.1.1700 & \texttt{if} & ``if" & \texttt{(x -- )} & If all bits of \texttt{x} are zero, skip forward to the next ``then" or ``else" token \\
             \hline
             6.1.2270 & \texttt{then} & ``then" & \texttt{( -- )} & Continue execution \\
@@ -89,6 +99,7 @@ For more information on how to program in Forth, consult outside sources on the 
 \subsubsection{Until}
 \subsubsection{Loop}
 \subsubsection{J}
+
 \subsubsection{Execute}
 \subsubsection{Colon}
 \subsubsection{Constant}
@@ -96,13 +107,10 @@ For more information on how to program in Forth, consult outside sources on the 
 \subsubsection{Semicolon}
 \subsubsection{Variable}
 \subsubsection{Does}
-\subsubsection{Key}
-\subsubsection{Emit}
-\subsubsection{Key Question}
-\subsubsection{Carriage Return}
+
 \subsubsection{Paren}
-\subsubsection{Dot S}
 \subsubsection{Backslash}
+
 \subsubsection{Block}
 \subsubsection{Buffer}
 \subsubsection{Load}

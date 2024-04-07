@@ -21,6 +21,8 @@ func (a *Assembler) handleDirectivePassOne(directive string) {
 		a.handleEqu()
 	case "include":
 		a.handleIncludePassOne()
+	case "pad":
+		a.handlePad()
 	default:
 		a.AddErrorf("unable to handle directive '%s'\n", directive)
 	}
@@ -43,6 +45,8 @@ func (a *Assembler) handleDirectivePassTwo(directive string) {
 		a.handleEqu()
 	case "include":
 		a.handleIncludePassTwo()
+	case "pad":
+		a.handlePad()
 	default:
 		a.AddErrorf("unable to handle directive '%s'\n", directive)
 	}
@@ -115,4 +119,9 @@ func (a *Assembler) handleStrPassTwo() {
 		a.Code[i] = uint16(tok.Contents[i-a.pc])
 	}
 	a.pc += uint16(len(tok.Contents))
+}
+
+func (a *Assembler) handlePad() {
+	amount := a.getNumber()
+	a.pc += amount
 }

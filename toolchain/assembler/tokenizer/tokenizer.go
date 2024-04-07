@@ -159,8 +159,8 @@ var singleCharMap = map[byte]TokenID{
 	':':  TOK_COLON,
 	',':  TOK_COMMA,
 	'$':  TOK_DOLLAR,
-	'+':  TOK_PLUS,
 	'-':  TOK_MINUS,
+	'^':  TOK_CARROT,
 }
 
 var keywordMap = map[string]TokenID{
@@ -169,6 +169,7 @@ var keywordMap = map[string]TokenID{
 	"dw":      TOK_DIR,
 	"include": TOK_DIR,
 	"str":     TOK_DIR,
+	"pad":     TOK_DIR,
 	"lda":     TOK_INS,
 	"sta":     TOK_INS,
 	"add":     TOK_INS,

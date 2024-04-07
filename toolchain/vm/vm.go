@@ -100,7 +100,7 @@ func (v *VM) SUB(i int16) {
 }
 
 func (v *VM) JSR(i int16) {
-	v.Accumulator = int16(v.PC)
+	v.Accumulator = int16(v.PC) + 1
 	v.JMP(i)
 }
 

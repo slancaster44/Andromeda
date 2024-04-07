@@ -14,6 +14,7 @@ func (a *Assembler) handleDef() {
 
 	ident := tok.Contents
 	a.AddLabel(ident, a.pc)
+	a.lastOuterDef = a.outerDef
 	a.outerDef = ident
 
 	a.ConsumeTok()

@@ -20,6 +20,10 @@ subdef init:
         sta.dir         cout                    ;
         lda.imm         bdos.console_in         ;Save cin vector
         sta.dir         cin                     ;
+        lda.imm         bdos.multiply           ;Save multiply vector
+        sta.dir         mul
+        lda.imm         bdos.divmod
+        sta.dir         divmod
         jmp.off         stack.init
 
         ;; Usage ;;
@@ -39,6 +43,48 @@ subdef console_in:
         sta.inc         rp
         inp.imm         console
         jmp.dec         rp
+
+        ;; Usage ;;
+        ;; jsr.dir      mul
+        ;; multiplies r0 by r1
+        ;; I know this method is naive, but we are going for
+        ;; simplicity of implementation
+subdef multiply:
+        sta.inc         rp
+        lda.imm         0               ; Clear register for result
+        sta.dir         r3              ;
+subdef mul_loop:
+        lda.dir         r0              ; Get r0
+        jnz.off         bdos.mul_nz     ; Test if not zero
+        jmp.dec         rp              ; Return if zero
+subdef mul_nz:
+        sub.imm         1               ; Subtract 1 from r0
+        sta.dir         r0              ; Store r0 back out
+        lda.dir         r1              ; Get r1
+        add.dir         r3              ; Add it to the result
+        sta.dir         r3              ; Store result back out
+        jmp.off         bdos.mul_loop   ; Continue the multiplication
+
+        ;; Usage ;;
+        ;; jsr.dir      divmod
+        ;; Divides r0 by r1, leaving the result in r3, and the
+        ;; remainder in r2
+subdef divmod:
+        sta.inc         rp
+        lda.imm         0               ; Clear register for result and modulus
+        sta.dir         r2              ;
+        sta.dir         r3              ;
+subdef dm_loop:
+        lda.dir         r0              ; Get r0
+        sub.dir         r1              ; Subtract r1 from it
+        jns.off         bdos.dm_ns      ; Jump if still positive
+        add.dir         r1              ; Add back to get remainder
+        sta.dir         r2              ; Save remainder
+        jmp.dec         rp              ; Return
+subdef dm_ns:
+        sta.dir         r0              ; Write back r0
+        lda.inc         r3              ;Increment r3
+        jmp.off         bdos.dm_loop    ;
 
         ;; Stack Initialization ;;
 def stack:
@@ -64,13 +110,9 @@ subdef docol:                                   ; To use in word: 'jsr.imm threa
         lda.dir         r0                      ; Load new thread pointer
         sta.dir         tp                      ; Store it into the thread pointer register
         jmp.inc         tp                      ; Go to next routine in thread
-subdef exit:                                    ; To use in word: jsr.imm thread.exit'
-        lda.dec         rp                      ; Pull old thread pointer into accumulator
-        sta.dir         tp                      ; Put old thread pointer back into tp
-        jmp.inc         tp                      ; Continue old thread
 subdef entry:
         dw              (setup)
-        dw              (forth_inv.code)
+        dw              (forth_divmod.code)
         dw              (exit)
 def dictionary:
         include         ("./src/dictionary.aas")

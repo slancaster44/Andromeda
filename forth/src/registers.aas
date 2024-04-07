@@ -16,12 +16,15 @@
         equ(r14, 0x0E)
         equ(r15, 0x0F)
 
-;; Input / Output Routines
+;; Special Routines
         equ(cout, 0x10)         ;;Console out
         equ(cin,  0x11)         ;;Console in
+        equ(mul,  0x12)         ;; Multiplication
+        equ(divmod, 0x13)       ;; Division/Modulus
 
 ;; Some locations for commonly accessed variables
-        equ(reset,  0x12)       ;; Location for the the reset vector
-        equ(tp,     0x13)       ;; Location for the thread pointer
-        equ(sp,     0x14)       ;; Location for the stack pointer
-        equ(rp,     0x15)       ;; Location for return stack pointer
+        equ(reset,  0x14)       ;; Location for the the reset vector
+        equ(tp,     0x15)       ;; Location for the thread pointer
+        equ(sp,     0x16)       ;; Location for the stack pointer
+        equ(rp,     0x17)       ;; Location for return stack pointer
+        equ(base,   0x18)       ;; A location for the current base

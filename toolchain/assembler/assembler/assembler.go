@@ -10,7 +10,8 @@ type Assembler struct {
 	Labels map[string]uint16
 	Errors []error
 
-	outerDef string
+	outerDef     string
+	lastOuterDef string
 
 	pc         uint16
 	tokens     []tokenizer.Token
@@ -25,10 +26,11 @@ func Assemble(tokens []tokenizer.Token) *Assembler {
 		Labels: map[string]uint16{},
 		Errors: []error{},
 
-		pc:       0,
-		tokens:   tokens,
-		curLoc:   0,
-		outerDef: "",
+		pc:           0,
+		tokens:       tokens,
+		curLoc:       0,
+		outerDef:     "",
+		lastOuterDef: "",
 	}
 
 	p.passOne()

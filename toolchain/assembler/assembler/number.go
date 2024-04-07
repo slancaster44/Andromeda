@@ -23,12 +23,15 @@ func (a *Assembler) getNumber() uint16 {
 		return uint16(-int16(a.getNumber()))
 	case tokenizer.TOK_DOLLAR:
 		out = uint64(a.pc)
+	case tokenizer.TOK_CARROT:
+		val, _ := a.Labels[a.lastOuterDef]
+		out = uint64(val)
 	case tokenizer.TOK_IDENT:
 		return a.handleLabel()
 	case tokenizer.TOK_CHAR:
 		out = uint64(tok.Contents[0])
 	default:
-		a.AddErrorf("Expected constant integer value,  got '%s'\n", tok.Contents)
+		a.AddErrorf("expected constant integer value,  got '%s'\n", tok.Contents)
 	}
 	a.AddError(err)
 
@@ -82,6 +85,9 @@ func (a *Assembler) getNumberPassOne() uint16 {
 		return a.handleLabelPassOne()
 	case tokenizer.TOK_CHAR:
 		out = uint64(tok.Contents[0])
+	case tokenizer.TOK_CARROT:
+		val, _ := a.Labels[a.lastOuterDef]
+		out = uint64(val)
 	default:
 		a.AddErrorf("Expected constant integer value,  got '%s'\n", tok.Contents)
 	}
