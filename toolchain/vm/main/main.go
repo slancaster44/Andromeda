@@ -22,16 +22,6 @@ func main() {
 		bin = append(bin, int16(binary.BigEndian.Uint16(bytes[i:])))
 	}
 
-	fmt.Println("Loading Binary at 0x0000...")
-	for i, v := range bin {
-		if i%16 == 0 {
-			fmt.Printf("\n0x%04X:\t", i)
-		}
-
-		fmt.Printf("0x%04X ", v)
-	}
-	fmt.Print("\n\n")
-
 	vm := vm2.NewVM(bin)
 	vm.Debug()
 }

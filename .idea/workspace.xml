@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1404cf34-0f97-464e-b7a0-07940acd956f" name="Changes" comment="Some missing kicad files">
+    <list default="true" id="1404cf34-0f97-464e-b7a0-07940acd956f" name="Changes" comment="Forth division and multiplication">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/manual/forth.tex" beforeDir="false" afterPath="$PROJECT_DIR$/doc/manual/forth.tex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/bin/forth.bin" beforeDir="false" afterPath="$PROJECT_DIR$/forth/bin/forth.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forth/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/forth/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/src/dictionary.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/dictionary.aas" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forth/src/main.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/main.aas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forth/src/registers.aas" beforeDir="false" afterPath="$PROJECT_DIR$/forth/src/registers.aas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/assembler/assembler.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/assembler/assembler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/assembler/definitions.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/assembler/definitions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/assembler/directives.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/assembler/directives.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/assembler/number.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/assembler/number.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/tokenizer/tokenizer.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/tokenizer/tokenizer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/assembler/tokenizer/tokens.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/assembler/tokenizer/tokens.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toolchain/vm/vm.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/vm/vm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toolchain/vm/main/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/toolchain/vm/main/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +204,8 @@
     <MESSAGE value="Stuff Happened" />
     <MESSAGE value="Work on forth" />
     <MESSAGE value="Some missing kicad files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some missing kicad files" />
+    <MESSAGE value="Forth division and multiplication" />
+    <option name="LAST_COMMIT_MESSAGE" value="Forth division and multiplication" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

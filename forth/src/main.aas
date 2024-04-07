@@ -89,9 +89,9 @@ subdef dm_ns:
         ;; Stack Initialization ;;
 def stack:
 subdef rp_base:
-        dw(0xFB00)
+        dw              (0xFB00)
 subdef sp_base:
-        dw(0xF000)
+        dw              (0xF000)
 subdef init:
         lda.rel         stack.rp_base           ; Set return stack pointer
         sta.dir         rp                      ;
@@ -112,7 +112,7 @@ subdef docol:                                   ; To use in word: 'jsr.imm threa
         jmp.inc         tp                      ; Go to next routine in thread
 subdef entry:
         dw              (setup)
-        dw              (forth_divmod.code)
+        dw              (forth_twoslash.code)
         dw              (exit)
 def dictionary:
         include         ("./src/dictionary.aas")

@@ -2,8 +2,6 @@
 def setup:
         lda.imm         9
         sta.inc         sp
-        lda.imm         4
-        sta.inc         sp
         lda.imm         0               ;Clear for testing purposes
         jmp.inc         tp
 
@@ -185,7 +183,7 @@ subdef name_length:
         dw(1)
 subdef name:
         str("*")
-subdef code:
+subdef code:                            ; Tested
         lda.dec         sp              ; Get one argument
         sta.dir         r0              ;
         lda.dec         sp              ; Get other argument
@@ -215,7 +213,7 @@ subdef name_length:
         dw(3)
 subdef name:
         str("/mod")
-subdef code:
+subdef code:                            ; Tested
         lda.dec         sp              ; Get the operands into the correct registers
         sta.dir         r1              ;
         lda.dec         sp              ;
@@ -226,6 +224,49 @@ subdef code:
         lda.dir         r3              ;
         sta.inc         sp              ;
         jmp.inc         tp              ; Next
+
+def forth_div:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(1)
+subdef name:
+        str("/")
+subdef code:                            ; Tested
+        jsr.imm         thread.docol
+        dw              (forth_divmod.code)
+        dw              (forth_swap.code)
+        dw              (forth_drop.code)
+        dw              (forth_exit.code)
+
+def forth_mod:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("mod")
+subdef code:
+        jsr.imm         thread.docol
+        dw              (forth_divmod.code)
+        dw              (forth_drop.code)
+        dw              (forth_exit.code)
+
+def forth_twoslash:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(3)
+subdef name:
+        str("2/")
+subdef code:
+        lda.imm         2
+        sta.inc         sp
+        jsr.imm         thread.docol
+        dw              (forth_divmod.code)
+        dw              (forth_swap.code)
+        dw              (forth_drop.code)
+        dw              (forth_exit.code)
 
 def forth_and:
 subdef link:
@@ -416,3 +457,16 @@ subdef code:
         sta.dir         r0              ; Load it into register for routine
         jsr.dir         cout            ; Put character on screen
         jmp.inc         tp              ; Continue
+
+
+def forth_emit:
+subdef link:
+        dw(^)
+subdef name_length:
+        dw(4)
+subdef name:
+        str("cr")
+subdef code:
+        lda.imm         '\n'
+        sta.inc         sp
+        jmp.inc         tp
